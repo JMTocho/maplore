@@ -1,0 +1,13 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  articles/components: components.html
+  articles/datasets: datasets.html
+  articles/get-started: get-started.html
+  articles/how-it-works: how-it-works.html
+  articles/security: security.html
+last_built: 2026-10-24T22:56Z
+urls:
+  reference: https://jmtocho.github.io/maplore/reference
+  article: https://jmtocho.github.io/maplore/articles
