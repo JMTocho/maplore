@@ -4,22 +4,18 @@ maplore adds components to [mapgl](https://walker-data.com/mapgl/) maps
 that help readers understand what they are looking at: as they pan and
 zoom, the map tells them how the area in view compares with the rest.
 
-![Map of the Buenos Aires metropolitan area coloured by projected
-population growth, with the four components. Top left, the view summary:
-61 of 528 departments, 36% of the population, average -0.4%, 2.5 points
-below the national 2.1%. Top right, a search box and the ranking of the
-highest values in view, led by San Vicente. Over La Matanza, outlined on
-the map, the context tooltip reads: growth 0.6%, rank 399 of 528, higher
-than 24%, 1.5 points below the
-average](reference/figures/maplore-all.png)
+![Animated map of Argentina coloured by projected population growth. As
+the map is panned and zoomed, the summary panel on the left and the
+ranking on the right update with the departments in view, and hovering
+over a department shows a tooltip with its rank and its difference with
+the
+average](https://raw.githubusercontent.com/JMTocho/maplore/main/man/figures/view-all.gif)
 
-Map of the Buenos Aires metropolitan area coloured by projected
-population growth, with the four components. Top left, the view summary:
-61 of 528 departments, 36% of the population, average -0.4%, 2.5 points
-below the national 2.1%. Top right, a search box and the ranking of the
-highest values in view, led by San Vicente. Over La Matanza, outlined on
-the map, the context tooltip reads: growth 0.6%, rank 399 of 528, higher
-than 24%, 1.5 points below the average
+Animated map of Argentina coloured by projected population growth. As
+the map is panned and zoomed, the summary panel on the left and the
+ranking on the right update with the departments in view, and hovering
+over a department shows a tooltip with its rank and its difference with
+the average
 
 - [`add_view_summary()`](https://jmtocho.github.io/maplore/reference/add_view_summary.md):
   what is in view, compared with the whole map.
