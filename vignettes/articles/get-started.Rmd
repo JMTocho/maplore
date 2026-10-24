@@ -1,0 +1,125 @@
+---
+title: "Get started"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+A choropleth tells readers *where* values are high or low, but not *how
+much* the area they are looking at differs from the rest. maplore adds
+components to [mapgl](https://walker-data.com/mapgl/) maps that answer that
+as readers pan and zoom.
+
+This page builds a map of Argentina's projected population growth, one
+component at a time. Every map here is live: pan, zoom and hover over it.
+
+```{r setup, message = FALSE}
+library(mapgl)
+library(maplore)
+```
+
+## The data
+
+`ar_departments` comes with maplore: the 528 Argentine departments with
+their estimated population in 2022 and 2035 and the projected growth
+between both years, in percent.
+
+```{r}
+head(sf::st_drop_geometry(ar_departments))
+```
+
+## A summary of what is in view
+
+Start with a regular mapgl map: a fill layer colored by growth. Then add
+`add_view_summary()` with the layer's ID and the column to summarise.
+
+```{r}
+colors <- interpolate(
+  column = "growth",
+  values = c(-10, 0, 10),
+  stops = c("#b2182b", "#f7f7f7", "#2166ac")
+)
+
+map <- maplibre(style = carto_style("positron"), center = c(-64, -38.5), zoom = 3.4) |>
+  add_fill_layer(
+    id = "departments",
+    source = ar_departments,
+    fill_color = colors,
+    fill_opacity = 0.85
+  ) |>
+  add_view_summary(
+    layer_id = "departments",
+    column = "growth",
+    label = "Population growth 2022-2035",
+    name_column = "department",
+    weight = "pop_2022",
+    weight_label = "population",
+    unit = "departments",
+    suffix = "%"
+  )
+```
+
+Zoom into Buenos Aires: the panel shows how many departments are in view,
+their average growth weighted by population, how it compares with the
+whole country, the highest and lowest departments, and a histogram of the
+values in view over all values. The histogram uses the map's colors, so it
+works as a legend too:
+
+- hover over a bar to outline the departments in that range;
+- click on the highest or lowest name to go there.
+
+## More components
+
+All the components can be used together. Add a ranking of the departments
+in view, a tooltip that puts each value in context and a search box:
+
+```{r}
+map |>
+  add_view_ranking(
+    layer_id = "departments",
+    column = "growth",
+    name_column = "department",
+    label = "Population growth",
+    unit = "departments",
+    suffix = "%"
+  ) |>
+  add_context_tooltip(
+    layer_id = "departments",
+    column = "growth",
+    name_column = "department",
+    label = "Population growth",
+    weight = "pop_2022",
+    unit = "departments",
+    suffix = "%"
+  ) |>
+  add_feature_search(
+    layer_id = "departments",
+    search_column = "department",
+    detail_column = "province"
+  )
+```
+
+## In other languages
+
+Numbers are formatted for any locale, and every text can be changed. The
+package includes English and Spanish texts:
+
+```{r, eval = FALSE}
+add_view_summary(
+  ...,
+  locale = "es-AR",               # 1.234,5 instead of 1,234.5
+  labels = context_labels("es")   # Spanish texts
+)
+
+context_labels("en", title = "Visible now")  # change any text
+```
+
+## Where it works
+
+Everything runs in the browser. The components work in any place where a
+mapgl map works: the RStudio and Positron viewers, HTML files saved with
+`htmlwidgets::saveWidget()`, R Markdown and Quarto documents, and Quarto
+dashboards, with no Shiny server.
+
+Next, see [the components](components.html) in detail.

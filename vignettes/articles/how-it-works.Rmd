@@ -1,0 +1,55 @@
+---
+title: "How it works"
+---
+
+## Everything happens in the browser
+
+When you add a component, R only stores its settings in the map. The
+component itself is a small piece of JavaScript that runs in the reader's
+browser: it reads the layer's data once, computes the figures for the whole
+map, and recomputes the figures for the view each time the map moves. That
+is why the components work in static HTML and Quarto documents, without a
+Shiny server.
+
+## What counts as "in view"
+
+A polygon counts as in view when any part of it is on screen; a point, when
+the point is on screen. Features outside the layer's zoom range are not
+counted.
+
+Relying only on what the map has drawn, with MapLibre's
+`queryRenderedFeatures()`, is not enough:
+
+- features too small to be drawn at low zoom are missed;
+- on the globe projection, some features far from the center are missed,
+  and features on the far side of the globe can be returned as if they
+  were visible.
+
+So maplore combines both: a feature is in view if it was drawn **or** a
+geometric test finds it on screen, and on the globe only features on the
+visible side count. For points, the geometric test alone is used. The
+counts have been checked against `sf` and against pixel positions at
+several zoom levels, with rotation and pitch.
+
+When the layer has a `filter`, only features drawn on screen are counted,
+since the geometric test cannot apply the filter. Very small features may
+then be missed at low zoom.
+
+## Performance
+
+Updating takes a few milliseconds for hundreds of polygons or a few
+thousand points. With 50,000 points, a summary and a ranking together take
+about 20 ms with all of them on screen and still update while panning;
+searching them takes about 2 ms. If an update takes longer than 25 ms
+(around 200,000 points), the components update only when the map stops
+moving, so panning stays smooth.
+
+Several components on the same layer share the work of finding the
+features in view.
+
+## Limitations
+
+- One numeric column per component.
+- The layer's source must be an `sf` object or inline GeoJSON; vector tile
+  sources are not supported.
+- Shiny proxies and `compare()` widgets are not supported yet.

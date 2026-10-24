@@ -1,0 +1,18 @@
+# R and RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Secrets: Mapbox and other tokens live here, never in the repository
+.Renviron
+.env
+
+# Build and check output
+*.tar.gz
+*.Rcheck/
+docs/
+
+# macOS
+.DS_Store

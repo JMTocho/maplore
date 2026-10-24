@@ -1,0 +1,48 @@
+url: https://jmtocho.github.io/maplore/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [getstarted, components, reference, articles, news]
+    right: [search, github]
+  components:
+    getstarted:
+      text: Get started
+      href: articles/get-started.html
+    components:
+      text: Components
+      href: articles/components.html
+
+reference:
+  - title: Components
+    desc: Add these to a map created with `mapgl::maplibre()` or `mapgl::mapboxgl()`.
+    contents:
+      - add_view_summary
+      - add_view_ranking
+      - add_context_tooltip
+      - add_feature_search
+  - title: Texts
+    contents:
+      - context_labels
+  - title: Datasets
+    contents:
+      - ar_departments
+      - earthquakes
+      - jp_prefectures
+  - title: Package
+    contents:
+      - maplore-package
+
+articles:
+  - title: Using maplore
+    navbar: ~
+    contents:
+      - articles/get-started
+      - articles/components
+      - articles/datasets
+  - title: Under the hood
+    contents:
+      - articles/how-it-works
+      - articles/security
