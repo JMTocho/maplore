@@ -11,8 +11,10 @@ map tells them how the area in view compares with the rest.
 - `add_context_tooltip()`: whether a value is high or low, and its rank.
 - `add_feature_search()`: find a place in your own data.
 
-Everything runs in the browser, so it works in HTML pages, R Markdown and
-Quarto documents and dashboards, with no Shiny server.
+maplore is an R package: you use it from R, and its interactive components
+are written in JavaScript and run in the browser. That is why it works in
+HTML pages, R Markdown and Quarto documents and dashboards, with no Shiny
+server.
 
 ## Installation
 
