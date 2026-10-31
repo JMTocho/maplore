@@ -230,6 +230,52 @@
   font-size: 18px;
 }
 
+/* Mini summary: three figures side by side */
+
+.mgc-mini-grid {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.mgc-mini-cell {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* The statistic's caption can be long ("Average · Population growth"):
+   it takes the remaining space and up to two lines. */
+.mgc-mini-cell:nth-child(2) {
+  flex: 1 1 0;
+}
+
+.mgc-mini-num {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mgc-mini-arrow {
+  margin-left: 3px;
+  font-size: 11px;
+  color: var(--mgc-muted);
+  vertical-align: 2px;
+}
+
+.mgc-mini-cap {
+  display: -webkit-box;
+  margin-top: 1px;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.25;
+  color: var(--mgc-muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
 /* ------------------------------------------------------------------ */
 /* Ranking                                                             */
 /* ------------------------------------------------------------------ */

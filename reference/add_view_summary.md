@@ -30,10 +30,13 @@ add_view_summary(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
-  compact = FALSE,
+  style = c("full", "compact", "mini"),
+  show_area = NULL,
+  area_unit = c("km2", "mi2"),
   collapsible = TRUE,
   collapsed = NULL,
-  labels = context_labels()
+  labels = context_labels(),
+  compact = NULL
 )
 ```
 
@@ -142,10 +145,28 @@ add_view_summary(
 
   Number of histogram bins.
 
-- compact:
+- style:
 
-  If `TRUE`, shows only the count, the value and the comparison, without
-  highest and lowest or histogram.
+  How much the panel shows:
+
+  - `"full"` (the default): count, value, comparison, highest and
+    lowest, and histogram.
+
+  - `"compact"`: only the count, the value and the comparison.
+
+  - `"mini"`: three figures side by side: features in view, the value
+    and the area of the view.
+
+- show_area:
+
+  Whether to show the area of the Earth covered by the screen. `NULL`
+  (the default) shows it in the `"mini"` style only. It is shown as a
+  dash when part of the screen is not on the Earth: when the globe does
+  not fill the screen, or the map is tilted towards the horizon.
+
+- area_unit:
+
+  Unit for the area: `"km2"` (the default) or `"mi2"`.
 
 - collapsible:
 
@@ -161,6 +182,10 @@ add_view_summary(
 
   Panel texts, as returned by
   [`context_labels()`](https://jmtocho.github.io/maplore/reference/context_labels.md).
+
+- compact:
+
+  Deprecated: `compact = TRUE` is the same as `style = "compact"`.
 
 ## Value
 
