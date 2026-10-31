@@ -26,8 +26,10 @@ the average
 - [`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md):
   find a place in your own data.
 
-Everything runs in the browser, so it works in HTML pages, R Markdown
-and Quarto documents and dashboards, with no Shiny server.
+maplore is an R package: you use it from R, and its interactive
+components are written in JavaScript and run in the browser. That is why
+it works in HTML pages, R Markdown and Quarto documents and dashboards,
+with no Shiny server.
 
 ## Installation
 
