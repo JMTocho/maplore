@@ -18,7 +18,7 @@ view_summary_labels(lang = c("en", "es"), ...)
 \code{lowest}, \code{share}, \code{view}, \code{all}. Ranking: \code{ranking_highest},
 \code{ranking_lowest}, \code{in_view}, \code{rank_overall}. Context tooltip: \code{rank},
 \code{higher_than}, \code{average_of_all}. Search: \code{search_placeholder},
-\code{search_none}.}
+\code{search_none}. Area: \code{area_zoom_in}.}
 }
 \value{
 A list of class \code{context_labels}.

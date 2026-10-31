@@ -51,7 +51,9 @@ test_that("new display options have sensible defaults", {
   expect_equal(s$stat, "mean")
   expect_null(s$color)
   expect_equal(s$highlight_color, "#1f2328")
-  expect_false(s$compact)
+  expect_equal(s$style, "full")
+  expect_false(s$show_area)
+  expect_equal(s$area_unit, "km2")
   expect_true(s$collapsible)
   expect_null(s$collapsed)
 })
@@ -66,7 +68,7 @@ test_that("stat, compact and collapse options are stored", {
   s <- m$x$mapgl_context$view_summary$deptos
   expect_equal(s$stat, "sum")
   expect_equal(s$color, "darkorange")
-  expect_true(s$compact)
+  expect_equal(s$style, "compact")
   expect_false(s$collapsible)
   expect_true(s$collapsed)
 
@@ -74,6 +76,27 @@ test_that("stat, compact and collapse options are stored", {
   expect_error(add_view_summary(base_map(), "deptos", "growth", compact = "yes"), "`compact`")
   expect_error(add_view_summary(base_map(), "deptos", "growth", collapsed = NA), "`collapsed`")
   expect_error(add_view_summary(base_map(), "deptos", "growth", color = 1), "`color`")
+})
+
+test_that("style sets the layout and whether the area is shown", {
+  get <- function(...) (base_map() |> add_view_summary("deptos", "growth", ...))$x$mapgl_context$view_summary$deptos
+
+  mini <- get(style = "mini")
+  expect_equal(mini$style, "mini")
+  expect_true(mini$show_area)
+
+  expect_false(get(style = "mini", show_area = FALSE)$show_area)
+  expect_true(get(style = "full", show_area = TRUE)$show_area)
+  expect_equal(get(style = "mini", area_unit = "mi2")$area_unit, "mi2")
+
+  # compact = TRUE is the old spelling of style = "compact"; an explicit
+  # style wins.
+  expect_equal(get(compact = TRUE)$style, "compact")
+  expect_equal(get(compact = TRUE, style = "mini")$style, "mini")
+
+  expect_error(get(style = "tiny"), "should be one of")
+  expect_error(get(area_unit = "ha"), "should be one of")
+  expect_error(get(show_area = "yes"), "`show_area`")
 })
 
 test_that("weight_label defaults to the weight column", {

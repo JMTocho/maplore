@@ -67,8 +67,20 @@
 #' @param highlight_color Color of the outline drawn around features when
 #'   hovering over the histogram or the highest and lowest names.
 #' @param bins Number of histogram bins.
-#' @param compact If `TRUE`, shows only the count, the value and the
-#'   comparison, without highest and lowest or histogram.
+#' @param style How much the panel shows:
+#'   - `"full"` (the default): count, value, comparison, highest and lowest,
+#'     and histogram.
+#'   - `"compact"`: only the count, the value and the comparison.
+#'   - `"mini"`: three figures side by side: features in view, the value and
+#'     the area of the view.
+#' @param show_area Whether to show the area of the Earth covered by the
+#'   screen. `NULL` (the default) shows it in the `"mini"` style only. It is
+#'   shown as a dash when part of the screen is not on the Earth: when the
+#'   globe does not fill the screen, or the map is tilted towards the
+#'   horizon.
+#' @param area_unit Unit for the area: `"km2"` (the default) or `"mi2"`.
+#' @param compact Deprecated: `compact = TRUE` is the same as
+#'   `style = "compact"`.
 #' @param collapsible If `TRUE`, adds a button to collapse the panel down to
 #'   its title and value.
 #' @param collapsed Whether the panel starts collapsed. `NULL` (the default)
@@ -125,10 +137,13 @@ add_view_summary <- function(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
-  compact = FALSE,
+  style = c("full", "compact", "mini"),
+  show_area = NULL,
+  area_unit = c("km2", "mi2"),
   collapsible = TRUE,
   collapsed = NULL,
-  labels = context_labels()
+  labels = context_labels(),
+  compact = NULL
 ) {
   check_map(map, "add_view_summary")
   check_string(layer_id, "layer_id")
@@ -148,10 +163,20 @@ add_view_summary <- function(
   check_number(digits, "digits", min = 0, max = 20)
   check_number(width, "width", min = 100)
   check_number(bins, "bins", min = 2, max = 100)
-  check_flag(compact, "compact")
+  check_flag(compact, "compact", allow_null = TRUE)
+  check_flag(show_area, "show_area", allow_null = TRUE)
   check_flag(collapsible, "collapsible")
   check_flag(collapsed, "collapsed", allow_null = TRUE)
   stat <- match.arg(stat)
+  area_unit <- match.arg(area_unit)
+  # `compact` predates `style`; it only applies when `style` is not given.
+  if (missing(style) && isTRUE(compact)) {
+    style <- "compact"
+  }
+  style <- match.arg(style)
+  if (is.null(show_area)) {
+    show_area <- style == "mini"
+  }
   position <- check_position(position)
   check_labels(labels)
   check_columns(map, layer_id, c(column, name_column, weight))
@@ -176,7 +201,9 @@ add_view_summary <- function(
     color = color,
     highlight_color = highlight_color,
     bins = bins,
-    compact = compact,
+    style = style,
+    show_area = show_area,
+    area_unit = area_unit,
     collapsible = collapsible,
     collapsed = collapsed,
     labels = unclass(labels)

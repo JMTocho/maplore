@@ -53,6 +53,57 @@
     return sorted[sorted.length - 1].value;
   }
 
+  var EARTH_RADIUS_KM = 6371.0088;
+  var KM2_PER_MI2 = 2.589988;
+  var DEG = Math.PI / 180;
+
+  // Area of a ring of [lng, lat] on the sphere, in km2 (as in Chamberlain
+  // and Duquette, 2007, the formula used by geojson-area and turf).
+  function ringAreaKm2(ring) {
+    // Keep longitudes continuous across the antimeridian.
+    for (var k = 1; k < ring.length; k++) {
+      while (ring[k][0] - ring[k - 1][0] > 180) ring[k][0] -= 360;
+      while (ring[k][0] - ring[k - 1][0] < -180) ring[k][0] += 360;
+    }
+    var sum = 0;
+    for (var j = 0; j < ring.length; j++) {
+      var a = ring[j];
+      var b = ring[(j + 1) % ring.length];
+      sum += (b[0] - a[0]) * DEG * (2 + Math.sin(a[1] * DEG) + Math.sin(b[1] * DEG));
+    }
+    return Math.abs(sum * EARTH_RADIUS_KM * EARTH_RADIUS_KM / 2);
+  }
+
+  // Area on the Earth covered by the screen, in km2, or null when part of
+  // the screen is not on the Earth: around the globe when zoomed out, or the
+  // sky when the map is tilted towards the horizon. The area of the visible
+  // part of a globe is hard to estimate well, so it is not shown. The
+  // screen's edges are sampled, so the outline follows the projection.
+  function screenAreaKm2(map) {
+    var canvas = map.getCanvas();
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    var steps = 8;
+    var ring = [];
+    var edge = function (x0, y0, x1, y1) {
+      for (var i = 0; i < steps; i++) {
+        var t = i / steps;
+        ring.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
+      }
+    };
+    edge(0, 0, w, 0);
+    edge(w, 0, w, h);
+    edge(w, h, 0, h);
+    edge(0, h, 0, 0);
+    for (var k = 0; k < ring.length; k++) {
+      var ll = map.unproject(ring[k]);
+      var back = map.project(ll);
+      if (Math.abs(back.x - ring[k][0]) > 1 || Math.abs(back.y - ring[k][1]) > 1) return null;
+      ring[k] = [ll.lng, ll.lat];
+    }
+    return ringAreaKm2(ring);
+  }
+
   function binOf(v, lo, hi, bins) {
     var span = hi - lo;
     var b = span > 0 ? Math.floor(((v - lo) / span) * bins) : 0;
@@ -92,7 +143,7 @@
       self._signature = null;
       self.update();
     });
-    if (this.o.compact) this.panel.container.classList.add("mgc-compact");
+    if (this.o.style !== "full") this.panel.container.classList.add("mgc-" + this.o.style);
     this.stop = U.onViewChange(map, function () {
       self.update();
     });
@@ -151,8 +202,13 @@
     rows.forEach(function (r) {
       idSum += r.id;
     });
+    // The area changes with every zoom even when the features in view do
+    // not; three significant digits are enough to show it.
+    var area = o.show_area ? screenAreaKm2(this.map) : null;
+    if (area != null && o.area_unit === "mi2") area = area / KM2_PER_MI2;
+    var areaKey = area == null ? "-" : Number(area.toPrecision(3));
     var signature = rows.length + ":" + idSum + ":" + panel.collapsed + ":" +
-      (this._binColors !== undefined);
+      (this._binColors !== undefined) + ":" + areaKey;
     if (signature === this._signature) return;
     this._signature = signature;
 
@@ -168,12 +224,22 @@
       return;
     }
 
+    if (o.style === "mini") {
+      body.appendChild(this.miniGrid(view, whole, area));
+      return;
+    }
+
     var count = f.int(view.n) + " " + L.of + " " + f.int(all.n) + " " + o.unit;
     if (o.weight && all.weight > 0) {
       count += " · " + f.share(view.weight, all.weight) + " " + L.share +
         (o.weight_label ? " (" + o.weight_label + ")" : "");
     }
     body.appendChild(el("div", "mgc-muted", count));
+    if (o.show_area) {
+      var areaLine = el("div", "mgc-muted", "≈ " + this.areaText(area));
+      if (area == null) areaLine.title = L.area_zoom_in;
+      body.appendChild(areaLine);
+    }
 
     var statLabel = { mean: L.average, median: L.median, sum: L.sum }[o.stat];
     body.appendChild(el("div", "mgc-label", statLabel + " · " + o.label));
@@ -181,11 +247,71 @@
 
     if (!whole) body.appendChild(el("div", "mgc-muted", this.comparison(view)));
 
-    if (o.compact) return;
+    if (o.style === "compact") return;
 
     if (o.name_column) body.appendChild(this.extremes(view));
     body.appendChild(this.histogramSvg(rows, view, whole));
     if (!whole) body.appendChild(this.legend());
+  };
+
+  // "310,000" or "1.99M"; a dash when the area is not meaningful.
+  ViewSummaryControl.prototype.areaValue = function (area) {
+    if (area == null) return "—";
+    if (area < 1e6) return this.f.int(area);
+    if (!this.areaFormat) {
+      this.areaFormat = new Intl.NumberFormat(this.o.locale, {
+        notation: "compact",
+        maximumSignificantDigits: 3,
+      });
+    }
+    return this.areaFormat.format(area);
+  };
+
+  // "km² in view"
+  ViewSummaryControl.prototype.areaCaption = function () {
+    return (this.o.area_unit === "mi2" ? "mi²" : "km²") + " " + this.o.labels.in_view;
+  };
+
+  ViewSummaryControl.prototype.areaText = function (area) {
+    return this.areaValue(area) + " " + this.areaCaption();
+  };
+
+  // Three figures side by side: features in view, the statistic and the
+  // area of the view.
+  ViewSummaryControl.prototype.miniGrid = function (view, whole, area) {
+    var o = this.o;
+    var L = o.labels;
+    var f = this.f;
+    var all = this.overall;
+    var grid = el("div", "mgc-mini-grid");
+    var cell = function (value, caption, title) {
+      var c = el("div", "mgc-mini-cell");
+      c.appendChild(value);
+      c.appendChild(el("div", "mgc-mini-cap", caption));
+      if (title) c.title = title;
+      grid.appendChild(c);
+    };
+
+    cell(el("div", "mgc-mini-num", f.int(view.n) + " / " + f.int(all.n)), o.unit);
+
+    var stat = el("div", "mgc-mini-num", f.fmt(view.value));
+    if (!whole && o.stat !== "sum") {
+      var diff = view.value - all.value;
+      if (Number(diff.toFixed(o.digits)) !== 0) {
+        stat.appendChild(el("span", "mgc-mini-arrow", diff > 0 ? "▲" : "▼"));
+      }
+    }
+    // The caption is just the variable; the statistic and the comparison
+    // with the whole map are in the tooltip, to keep the strip short.
+    var statLabel = { mean: L.average, median: L.median, sum: L.sum }[o.stat];
+    var detail = statLabel + " · " + o.label;
+    cell(stat, o.label, whole ? detail : detail + " — " + this.comparison(view));
+
+    if (o.show_area) {
+      cell(el("div", "mgc-mini-num", this.areaValue(area)), this.areaCaption(),
+        area == null ? L.area_zoom_in : null);
+    }
+    return grid;
   };
 
   ViewSummaryControl.prototype.comparison = function (view) {

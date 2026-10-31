@@ -25,10 +25,13 @@ add_view_summary(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
-  compact = FALSE,
+  style = c("full", "compact", "mini"),
+  show_area = NULL,
+  area_unit = c("km2", "mi2"),
   collapsible = TRUE,
   collapsed = NULL,
-  labels = context_labels()
+  labels = context_labels(),
+  compact = NULL
 )
 }
 \arguments{
@@ -93,8 +96,22 @@ hovering over the histogram or the highest and lowest names.}
 
 \item{bins}{Number of histogram bins.}
 
-\item{compact}{If \code{TRUE}, shows only the count, the value and the
-comparison, without highest and lowest or histogram.}
+\item{style}{How much the panel shows:
+\itemize{
+\item \code{"full"} (the default): count, value, comparison, highest and lowest,
+and histogram.
+\item \code{"compact"}: only the count, the value and the comparison.
+\item \code{"mini"}: three figures side by side: features in view, the value and
+the area of the view.
+}}
+
+\item{show_area}{Whether to show the area of the Earth covered by the
+screen. \code{NULL} (the default) shows it in the \code{"mini"} style only. It is
+shown as a dash when part of the screen is not on the Earth: when the
+globe does not fill the screen, or the map is tilted towards the
+horizon.}
+
+\item{area_unit}{Unit for the area: \code{"km2"} (the default) or \code{"mi2"}.}
 
 \item{collapsible}{If \code{TRUE}, adds a button to collapse the panel down to
 its title and value.}
@@ -103,6 +120,9 @@ its title and value.}
 starts collapsed on maps narrower than 480 pixels, such as on phones.}
 
 \item{labels}{Panel texts, as returned by \code{\link[=context_labels]{context_labels()}}.}
+
+\item{compact}{Deprecated: \code{compact = TRUE} is the same as
+\code{style = "compact"}.}
 }
 \value{
 The modified map object.
