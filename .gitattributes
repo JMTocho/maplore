@@ -1,0 +1,5 @@
+# maplore is an R package: its browser code (the htmlwidget's JavaScript and
+# CSS) should not decide the repository's language on GitHub.
+inst/htmlwidgets/** linguist-detectable=false
+man/** linguist-documentation
+vignettes/** linguist-documentation
