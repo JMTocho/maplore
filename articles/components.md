@@ -49,12 +49,40 @@ Options:
   in view: *“16.8M, 36% of total”*. Values of a million or more are
   abbreviated.
 - `weight`: a column to weight the mean or median, such as population.
-- `compact = TRUE`: only the count, the value and the comparison.
+- `style`: how much the panel shows. `"full"` (the default) is the panel
+  above; `"compact"` keeps only the count, the value and the comparison;
+  `"mini"` is a strip of three figures, shown below.
+- `show_area = TRUE`: adds the area of the Earth covered by the screen,
+  in km² (or mi², with `area_unit = "mi2"`). The `"mini"` style shows it
+  by default.
 - `collapsed`: the button in the corner collapses the panel to its title
   and value. On maps narrower than 480 px, such as on phones, the panel
   starts collapsed; `collapsed = FALSE` keeps it open and
   `collapsible = FALSE` removes the button.
 - `color`: one color for the histogram instead of the map’s colors.
+
+### A smaller panel: `style = "mini"`
+
+Three figures side by side: how many features are in view out of the
+total, the statistic (hover over it to see how it compares with the
+whole map), and the area covered by the screen.
+
+``` r
+
+japan |>
+  add_view_summary(
+    layer_id = "prefectures",
+    column = "aged_65",
+    label = "Aged 65 and over",
+    weight = "pop_2024",
+    unit = "prefectures",
+    suffix = "%",
+    style = "mini"
+  )
+```
+
+The area shows as a dash when part of the screen is not on the Earth,
+such as when the globe does not fill the screen: zoom in to see it.
 
 ## Which ones stand out here? `add_view_ranking()`
 
