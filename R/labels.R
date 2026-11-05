@@ -13,7 +13,8 @@
 #'   `lowest`, `share`, `view`, `all`. Ranking: `ranking_highest`,
 #'   `ranking_lowest`, `in_view`, `rank_overall`. Context tooltip: `rank`,
 #'   `higher_than`, `average_of_all`. Search: `search_placeholder`,
-#'   `search_none`. Area: `area_zoom_in`.
+#'   `search_none`. Area: `area_zoom_in`. References: `ref_above`,
+#'   `ref_below`, `ref_same`.
 #'
 #' @return A list of class `context_labels`.
 #' @export
@@ -55,7 +56,10 @@ context_labels <- function(lang = c("en", "es"), ...) {
       average_of_all = "the average",
       search_placeholder = "Search\u2026",
       search_none = "No matches",
-      area_zoom_in = "Zoom in, or tilt the map less, to see the area in view"
+      area_zoom_in = "Zoom in, or tilt the map less, to see the area in view",
+      ref_above = "above",
+      ref_below = "below",
+      ref_same = "same as"
     ),
     es = list(
       title = "En esta vista",
@@ -87,7 +91,10 @@ context_labels <- function(lang = c("en", "es"), ...) {
       average_of_all = "promedio",
       search_placeholder = "Buscar\u2026",
       search_none = "Sin resultados",
-      area_zoom_in = "Acerc\u00e1 el zoom, o inclin\u00e1 menos el mapa, para ver la superficie"
+      area_zoom_in = "Acerc\u00e1 el zoom, o inclin\u00e1 menos el mapa, para ver la superficie",
+      ref_above = "por encima de",
+      ref_below = "por debajo de",
+      ref_same = "igual a"
     )
   )
 

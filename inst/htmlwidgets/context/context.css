@@ -230,6 +230,110 @@
   font-size: 18px;
 }
 
+/* Position chart: a bar of all values with the view and overall marked */
+
+.mgc-position-wrap {
+  margin-top: 8px;
+}
+
+.mgc-position {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mgc-position-bar {
+  shape-rendering: crispEdges;
+}
+
+.mgc-position-frame {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.25);
+  stroke-width: 0.5;
+  pointer-events: none;
+}
+
+.mgc-position-dot {
+  fill: var(--mgc-text);
+  stroke: #fff;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.mgc-bin-active .mgc-position-bar {
+  stroke: var(--mgc-text);
+  stroke-width: 1;
+}
+
+/* Strip chart: one dot per feature */
+
+.mgc-strip {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mgc-strip-dots {
+  pointer-events: none;
+}
+
+.mgc-strip-all {
+  fill: var(--mgc-bar);
+}
+
+.mgc-strip-view {
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.4;
+}
+
+/* Split chart: two histograms, one above the other */
+
+.mgc-split {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mgc-split-label {
+  font-size: 9px;
+  fill: var(--mgc-muted);
+}
+
+.mgc-split-base {
+  stroke: var(--mgc-bar);
+  stroke-width: 1;
+}
+
+.mgc-split-active {
+  stroke: var(--mgc-text);
+  stroke-width: 1;
+}
+
+.mgc-split .mgc-mean-view,
+.mgc-split .mgc-mean-all {
+  pointer-events: none;
+}
+
+.mgc-share-track {
+  fill: var(--mgc-bar);
+}
+
+.mgc-key-dot {
+  border-radius: 50% !important;
+  width: 8px !important;
+  background: var(--mgc-text);
+}
+
+.mgc-key-line {
+  width: 0 !important;
+  height: 10px !important;
+  border-left: 1.5px dashed var(--mgc-muted);
+  border-radius: 0 !important;
+}
+
 /* Mini summary: three figures side by side */
 
 .mgc-mini-grid {

@@ -1,3 +1,24 @@
+# maplore 0.0.0.9001
+
+* `add_view_summary()` gains:
+  * `style`: `"full"` (the default), `"compact"` or `"mini"`, a strip of
+    three figures: the features in view, the statistic and the area of the
+    view. `compact = TRUE` still works and means `style = "compact"`.
+  * `show_area` and `area_unit`: the area of the Earth covered by the
+    screen, in km² or mi².
+  * `chart`: the chart at the bottom of the panel. `"histogram"` (the
+    default), `"position"` (a bar of all values with the view and the whole
+    map marked on it), `"strip"` (one dot per feature), `"split"` (two
+    histograms, the view above all features) or `"none"`.
+  * `references`: up to three other values to compare the view with,
+    besides the whole map: fixed numbers, such as a target, or groups of
+    features defined with the new `reference_group()`, such as a province.
+    Their values are computed in R with the panel's statistic and weight.
+* New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
+  `ref_below` and `ref_same`.
+* maplore now imports jsonlite, which mapgl already uses, to read the
+  layer's data in R.
+
 # maplore 0.0.0.9000
 
 * First development version.

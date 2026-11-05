@@ -63,7 +63,75 @@ Options:
   and value. On maps narrower than 480 px, such as on phones, the panel
   starts collapsed; `collapsed = FALSE` keeps it open and
   `collapsible = FALSE` removes the button.
-- `color`: one color for the histogram instead of the map's colors.
+- `chart`: the chart at the bottom of the panel, shown below.
+- `references`: other values to compare the view with, shown below.
+- `color`: one color for the chart instead of the map's colors.
+
+### Choosing the chart: `chart`
+
+The chart at the bottom of the panel can be:
+
+- `"histogram"` (the default): the values in view over the distribution of
+  all values, as above.
+- `"position"`: a bar spanning all values, in the map's colors, with the
+  value in view (dot) and the whole map (dashed line) marked on it. The
+  simplest to read.
+- `"strip"`: one dot per feature, those in view in the map's colors over all
+  the others in grey. It shows where the features in view fall among all of
+  them; above 2,000 features, an even sample is drawn.
+- `"split"`: two histograms on the same scale, the view above and all
+  features below.
+- `"none"`: no chart, for a shorter panel.
+
+In all of them, hovering over the chart outlines the features in that range
+of values on the map.
+
+```{r}
+japan |>
+  add_view_summary(
+    layer_id = "prefectures",
+    column = "aged_65",
+    label = "Aged 65 and over",
+    name_column = "prefecture",
+    weight = "pop_2024",
+    weight_label = "population",
+    unit = "prefectures",
+    suffix = "%",
+    chart = "position"
+  )
+```
+
+### Comparing with other references: `references`
+
+Besides the whole map, the panel can compare the view with up to three
+other values, as a named list. Each one is either a fixed number, such as a
+target or a national figure, or a `reference_group()` of features, whose
+value is computed with the same statistic and weight as the panel.
+
+The five prefectures of `jp_prefectures` are younger, on average, than
+Japan as a whole, where 29.3% of people were 65 or older in 2024. Here the
+view is compared with Tokyo and with the national figure:
+
+```{r}
+japan |>
+  add_view_summary(
+    layer_id = "prefectures",
+    column = "aged_65",
+    label = "Aged 65 and over",
+    name_column = "prefecture",
+    weight = "pop_2024",
+    weight_label = "population",
+    unit = "prefectures",
+    suffix = "%",
+    chart = "none",
+    references = list(
+      "Tokyo" = reference_group("prefecture", "Tokyo"),
+      "Japan" = 29.3
+    )
+  )
+```
+
+Zoom into Akita, in the north: it is far above both Tokyo and Japan.
 
 ### A smaller panel: `style = "mini"`
 
@@ -78,6 +146,7 @@ japan |>
     column = "aged_65",
     label = "Aged 65 and over",
     weight = "pop_2024",
+    weight_label = "population",
     unit = "prefectures",
     suffix = "%",
     style = "mini"

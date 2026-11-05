@@ -25,11 +25,13 @@ add_view_summary(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
+  chart = c("histogram", "position", "strip", "split", "none"),
   style = c("full", "compact", "mini"),
   show_area = NULL,
   area_unit = c("km2", "mi2"),
   collapsible = TRUE,
   collapsed = NULL,
+  references = NULL,
   labels = context_labels(),
   compact = NULL
 )
@@ -96,6 +98,21 @@ hovering over the histogram or the highest and lowest names.}
 
 \item{bins}{Number of histogram bins.}
 
+\item{chart}{Chart at the bottom of the \code{"full"} style:
+\itemize{
+\item \code{"histogram"} (the default): the values in view over the distribution
+of all values.
+\item \code{"position"}: a bar spanning all values, in the map's colors, with
+the value in view and the overall value marked on it. With
+\code{stat = "sum"}, the share of the total that is in view.
+\item \code{"strip"}: one dot per feature along the scale of values, those in
+view in the map's colors over all the others in grey. Above 2,000
+features, an even sample of 2,000 is drawn.
+\item \code{"split"}: two histograms on the same scale, one above the other:
+the features in view, in the map's colors, and all features, in grey.
+\item \code{"none"}: no chart.
+}}
+
 \item{style}{How much the panel shows:
 \itemize{
 \item \code{"full"} (the default): count, value, comparison, highest and lowest,
@@ -118,6 +135,12 @@ its title and value.}
 
 \item{collapsed}{Whether the panel starts collapsed. \code{NULL} (the default)
 starts collapsed on maps narrower than 480 pixels, such as on phones.}
+
+\item{references}{Up to three other values to compare the view with,
+besides the whole map, as a named list. Each one is either a single
+number, such as a target, or a \code{\link[=reference_group]{reference_group()}} of features, whose
+value is computed with the same \code{stat} and \code{weight} as the panel. For
+example, \code{list("CABA" = reference_group("province", "Ciudad Autonoma de Buenos Aires"), "Target" = 2)}.}
 
 \item{labels}{Panel texts, as returned by \code{\link[=context_labels]{context_labels()}}.}
 

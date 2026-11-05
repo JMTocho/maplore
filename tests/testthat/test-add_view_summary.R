@@ -52,6 +52,7 @@ test_that("new display options have sensible defaults", {
   expect_null(s$color)
   expect_equal(s$highlight_color, "#1f2328")
   expect_equal(s$style, "full")
+  expect_equal(s$chart, "histogram")
   expect_false(s$show_area)
   expect_equal(s$area_unit, "km2")
   expect_true(s$collapsible)
@@ -97,6 +98,60 @@ test_that("style sets the layout and whether the area is shown", {
   expect_error(get(style = "tiny"), "should be one of")
   expect_error(get(area_unit = "ha"), "should be one of")
   expect_error(get(show_area = "yes"), "`show_area`")
+})
+
+test_that("chart picks the chart of the full panel", {
+  get <- function(...) (base_map() |> add_view_summary("deptos", "growth", ...))$x$mapgl_context$view_summary$deptos
+  expect_equal(get(chart = "position")$chart, "position")
+  expect_equal(get(chart = "strip")$chart, "strip")
+  expect_equal(get(chart = "split")$chart, "split")
+  expect_equal(get(chart = "none")$chart, "none")
+  expect_error(get(chart = "pie"), "should be one of")
+})
+
+test_that("references are computed in R with the panel's stat and weight", {
+  d <- sf::st_drop_geometry(ar_departments)
+  caba <- d[d$province == "Ciudad Aut\u00f3noma de Buenos Aires", ]
+  m <- mapgl::maplibre() |>
+    mapgl::add_fill_layer(id = "all", source = ar_departments, fill_color = "red")
+  get <- function(...) (m |> add_view_summary("all", "growth", ...))$x$mapgl_context$view_summary$all$references
+
+  refs <- get(
+    weight = "pop_2022",
+    references = list(
+      "CABA" = reference_group("province", "Ciudad Aut\u00f3noma de Buenos Aires"),
+      "Target" = 2
+    )
+  )
+  expect_equal(refs[[1]]$label, "CABA")
+  expect_equal(refs[[1]]$value, weighted.mean(caba$growth, caba$pop_2022))
+  expect_equal(refs[[2]], list(label = "Target", value = 2))
+
+  expect_equal(get(references = list("CABA" = reference_group("province", "Ciudad Aut\u00f3noma de Buenos Aires")))[[1]]$value, mean(caba$growth))
+  expect_equal(
+    (m |> add_view_summary("all", "pop_2022", stat = "sum",
+      references = list("CABA" = reference_group("province", "Ciudad Aut\u00f3noma de Buenos Aires"))))$x$mapgl_context$view_summary$all$references[[1]]$value,
+    sum(caba$pop_2022)
+  )
+  expect_null(get())
+})
+
+test_that("references are validated", {
+  m <- base_map()
+  ref <- function(x) add_view_summary(m, "deptos", "growth", references = x)
+  expect_error(ref(list(1, 2)), "non-empty name")
+  expect_error(ref(list(a = 1, b = 2, c = 3, d = 4)), "at most 3")
+  expect_error(ref(list(a = "x")), "single number")
+  expect_error(ref(reference_group("province", "x")), "named list")
+  expect_error(ref(list(a = reference_group("nope", "x"))), "not in the layer")
+  expect_error(ref(list(a = reference_group("province", "Nowhere"))), "matches no features")
+  expect_error(reference_group("province", character()), "one or more values")
+})
+
+test_that("weighted_median matches the browser's rule", {
+  expect_equal(weighted_median(c(1, 2, 3), c(1, 1, 1)), 2)
+  expect_equal(weighted_median(c(1, 2, 3, 4), c(1, 1, 1, 1)), 2.5)
+  expect_equal(weighted_median(c(1, 10), c(9, 1)), 1)
 })
 
 test_that("weight_label defaults to the weight column", {

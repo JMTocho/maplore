@@ -67,6 +67,18 @@
 #' @param highlight_color Color of the outline drawn around features when
 #'   hovering over the histogram or the highest and lowest names.
 #' @param bins Number of histogram bins.
+#' @param chart Chart at the bottom of the `"full"` style:
+#'   - `"histogram"` (the default): the values in view over the distribution
+#'     of all values.
+#'   - `"position"`: a bar spanning all values, in the map's colors, with
+#'     the value in view and the overall value marked on it. With
+#'     `stat = "sum"`, the share of the total that is in view.
+#'   - `"strip"`: one dot per feature along the scale of values, those in
+#'     view in the map's colors over all the others in grey. Above 2,000
+#'     features, an even sample of 2,000 is drawn.
+#'   - `"split"`: two histograms on the same scale, one above the other:
+#'     the features in view, in the map's colors, and all features, in grey.
+#'   - `"none"`: no chart.
 #' @param style How much the panel shows:
 #'   - `"full"` (the default): count, value, comparison, highest and lowest,
 #'     and histogram.
@@ -85,6 +97,12 @@
 #'   its title and value.
 #' @param collapsed Whether the panel starts collapsed. `NULL` (the default)
 #'   starts collapsed on maps narrower than 480 pixels, such as on phones.
+#' @param references Up to three other values to compare the view with,
+#'   besides the whole map, as a named list. Each one is either a single
+#'   number, such as a target, or a [reference_group()] of features, whose
+#'   value is computed with the same `stat` and `weight` as the panel. For
+#'   example, `list("CABA" = reference_group("province", "Ciudad Autonoma de
+#'   Buenos Aires"), "Target" = 2)`.
 #' @param labels Panel texts, as returned by [context_labels()].
 #'
 #' @return The modified map object.
@@ -137,11 +155,13 @@ add_view_summary <- function(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
+  chart = c("histogram", "position", "strip", "split", "none"),
   style = c("full", "compact", "mini"),
   show_area = NULL,
   area_unit = c("km2", "mi2"),
   collapsible = TRUE,
   collapsed = NULL,
+  references = NULL,
   labels = context_labels(),
   compact = NULL
 ) {
@@ -169,6 +189,7 @@ add_view_summary <- function(
   check_flag(collapsed, "collapsed", allow_null = TRUE)
   stat <- match.arg(stat)
   area_unit <- match.arg(area_unit)
+  chart <- match.arg(chart)
   # `compact` predates `style`; it only applies when `style` is not given.
   if (missing(style) && isTRUE(compact)) {
     style <- "compact"
@@ -180,6 +201,7 @@ add_view_summary <- function(
   position <- check_position(position)
   check_labels(labels)
   check_columns(map, layer_id, c(column, name_column, weight))
+  references <- resolve_references(references, map, layer_id, column, stat, weight)
 
   add_component(map, "view_summary", layer_id, list(
     layer_id = layer_id,
@@ -201,6 +223,8 @@ add_view_summary <- function(
     color = color,
     highlight_color = highlight_color,
     bins = bins,
+    chart = chart,
+    references = references,
     style = style,
     show_area = show_area,
     area_unit = area_unit,

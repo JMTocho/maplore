@@ -246,12 +246,24 @@
     body.appendChild(el("div", "mgc-value", f.fmt(view.value)));
 
     if (!whole) body.appendChild(el("div", "mgc-muted", this.comparison(view)));
+    var self = this;
+    (o.references || []).forEach(function (ref) {
+      body.appendChild(el("div", "mgc-muted mgc-reference", self.referenceText(view, ref)));
+    });
 
     if (o.style === "compact") return;
 
     if (o.name_column) body.appendChild(this.extremes(view));
-    body.appendChild(this.histogramSvg(rows, view, whole));
-    if (!whole) body.appendChild(this.legend());
+    if (o.chart === "histogram") {
+      body.appendChild(this.histogramSvg(rows, view, whole));
+      if (!whole) body.appendChild(this.legend());
+    } else if (o.chart === "position") {
+      body.appendChild(o.stat === "sum" ? this.shareSvg(view) : this.positionSvg(view, whole));
+    } else if (o.chart === "strip") {
+      body.appendChild(this.stripSvg(rows, view, whole));
+    } else if (o.chart === "split") {
+      body.appendChild(this.splitSvg(rows, view, whole));
+    }
   };
 
   // "310,000" or "1.99M"; a dash when the area is not meaningful.
@@ -305,13 +317,35 @@
     // with the whole map are in the tooltip, to keep the strip short.
     var statLabel = { mean: L.average, median: L.median, sum: L.sum }[o.stat];
     var detail = statLabel + " · " + o.label;
-    cell(stat, o.label, whole ? detail : detail + " — " + this.comparison(view));
+    var lines = [whole ? detail : detail + " — " + this.comparison(view)];
+    var self = this;
+    (o.references || []).forEach(function (ref) {
+      lines.push(self.referenceText(view, ref));
+    });
+    cell(stat, o.label, lines.join("\n"));
 
     if (o.show_area) {
       cell(el("div", "mgc-mini-num", this.areaValue(area)), this.areaCaption(),
         area == null ? L.area_zoom_in : null);
     }
     return grid;
+  };
+
+  // "▲ 4.8 pts above CABA (-5.2%)". With stat = "sum", the view as a share
+  // of the reference: "62% of CABA (3.1M)".
+  ViewSummaryControl.prototype.referenceText = function (view, ref) {
+    var o = this.o;
+    var L = o.labels;
+    var f = this.f;
+    var shown = ref.label + " (" + f.fmt(ref.value) + ")";
+    if (o.stat === "sum") {
+      if (ref.value === 0) return shown;
+      return f.pct(view.value / ref.value) + " " + L.of + " " + shown;
+    }
+    var diff = view.value - ref.value;
+    if (Number(diff.toFixed(o.digits)) === 0) return "= " + L.ref_same + " " + shown;
+    return (diff > 0 ? "▲ " : "▼ ") + f.num(Math.abs(diff)) + o.diff_suffix + " " +
+      (diff > 0 ? L.ref_above : L.ref_below) + " " + shown;
   };
 
   ViewSummaryControl.prototype.comparison = function (view) {
@@ -458,6 +492,340 @@
     };
     s.appendChild(lab(0, "start", f.fmt(lo)));
     s.appendChild(lab(W, "end", f.fmt(hi)));
+    return s;
+  };
+
+  // A bar spanning all values, in the map's colors, with the value in view
+  // (dot) and the overall value (dashed line) marked on it. Hovering over a
+  // stretch of the bar outlines the features in that range, as with the
+  // histogram.
+  ViewSummaryControl.prototype.positionSvg = function (view, whole) {
+    var self = this;
+    var o = this.o;
+    var L = o.labels;
+    var f = this.f;
+    var lo = this.lo;
+    var hi = this.hi;
+    var bins = o.bins;
+    var colors = this.binColors();
+    var accent = o.color || "#1f6feb";
+
+    var W = 240;
+    var barY = 14;
+    var barH = 8;
+    var s = svg("svg", {
+      viewBox: "0 0 " + W + " 40",
+      class: "mgc-position",
+      role: "img",
+      "aria-label": L.view + ": " + f.fmt(view.value) + ", " + L.all + ": " + f.fmt(this.overall.value),
+    });
+
+    var bw = W / bins;
+    var binW = (hi - lo) / bins;
+    for (var i = 0; i < bins; i++) {
+      var g = svg("g", { class: "mgc-bin" });
+      g.appendChild(svg("rect", {
+        x: i * bw, y: barY, width: bw + 0.5, height: barH,
+        class: "mgc-position-bar", style: "fill:" + (colors ? colors[i] : accent),
+      }));
+      g.appendChild(svg("rect", { x: i * bw, y: 0, width: bw, height: 30, class: "mgc-hit" }));
+      var tip = svg("title");
+      tip.textContent = f.fmt(lo + i * binW) + " – " + f.fmt(lo + (i + 1) * binW);
+      g.appendChild(tip);
+      (function (bin, group) {
+        group.addEventListener("mouseenter", function () {
+          group.classList.add("mgc-bin-active");
+          self.highlightBin(bin);
+        });
+        group.addEventListener("mouseleave", function () {
+          group.classList.remove("mgc-bin-active");
+          self.highlighter.clear();
+        });
+      })(i, g);
+      s.appendChild(g);
+    }
+    s.appendChild(svg("rect", { x: 0, y: barY, width: W, height: barH, class: "mgc-position-frame" }));
+
+    var xOf = function (v) {
+      var x = hi > lo ? ((v - lo) / (hi - lo)) * W : W / 2;
+      return Math.min(Math.max(x, 0), W);
+    };
+    var xAll = xOf(this.overall.value);
+    s.appendChild(svg("line", { x1: xAll, x2: xAll, y1: barY - 6, y2: barY + barH + 6, class: "mgc-mean-all" }));
+    if (!whole) {
+      s.appendChild(svg("circle", {
+        cx: xOf(view.value), cy: barY + barH / 2, r: 5.5, class: "mgc-position-dot",
+      }));
+    }
+
+    var lab = function (x, anchor, text) {
+      var t = svg("text", { x: x, y: 38, "text-anchor": anchor, class: "mgc-axis" });
+      t.textContent = text;
+      return t;
+    };
+    s.appendChild(lab(0, "start", f.fmt(lo)));
+    s.appendChild(lab(W, "end", f.fmt(hi)));
+
+    var wrap = el("div", "mgc-position-wrap");
+    wrap.appendChild(s);
+    var legend = el("div", "mgc-legend");
+    if (!whole) {
+      var dot = el("span", "mgc-legend-item");
+      dot.appendChild(el("i", "mgc-key-dot"));
+      dot.appendChild(document.createTextNode(L.view));
+      legend.appendChild(dot);
+    }
+    var line = el("span", "mgc-legend-item");
+    line.appendChild(el("i", "mgc-key-line"));
+    line.appendChild(document.createTextNode(whole ? L.whole_map : L.all));
+    legend.appendChild(line);
+    wrap.appendChild(legend);
+    return wrap;
+  };
+
+  // One dot per feature along the scale of values: all features in grey,
+  // those in view in the map's colors on top. Dots get a fixed vertical
+  // offset from their id, so they do not overlap much and do not move as the
+  // map moves. Above STRIP_MAX features, an even sample of them is drawn.
+  var STRIP_MAX = 2000;
+
+  function jitter(id) {
+    // A cheap, stable pseudo-random number in [0, 1) from an integer id.
+    var x = Math.sin(id * 12.9898 + 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  // Every k-th row in value order, so the sample keeps the distribution.
+  function evenSample(rows, max) {
+    if (rows.length <= max) return rows;
+    var sorted = rows.slice().sort(function (a, b) {
+      return a.value - b.value;
+    });
+    var step = sorted.length / max;
+    var out = [];
+    for (var i = 0; i < max; i++) out.push(sorted[Math.floor(i * step)]);
+    return out;
+  }
+
+  ViewSummaryControl.prototype.stripSvg = function (rows, view, whole) {
+    var self = this;
+    var o = this.o;
+    var L = o.labels;
+    var f = this.f;
+    var lo = this.lo;
+    var hi = this.hi;
+    var bins = o.bins;
+    var colors = this.binColors();
+    var accent = o.color || "#1f6feb";
+    if (!this._stripAll) this._stripAll = evenSample(this.rows, STRIP_MAX);
+
+    var W = 240;
+    var H = 40;
+    var pad = 4;
+    var s = svg("svg", {
+      viewBox: "0 0 " + W + " " + (H + 14),
+      class: "mgc-strip",
+      role: "img",
+      "aria-label": L.view + " vs. " + L.all,
+    });
+    var xOf = function (v) {
+      return hi > lo ? ((v - lo) / (hi - lo)) * W : W / 2;
+    };
+    var yOf = function (r) {
+      return pad + jitter(r.id) * (H - 2 * pad);
+    };
+    var fillOf = function (v) {
+      return colors ? colors[binOf(v, lo, hi, bins)] : accent;
+    };
+
+    // Hover bands first, so the dots stay on top and the bands catch the
+    // pointer between them.
+    var bw = W / bins;
+    var binW = (hi - lo) / bins;
+    for (var i = 0; i < bins; i++) {
+      var g = svg("g", { class: "mgc-bin" });
+      g.appendChild(svg("rect", { x: i * bw, y: 0, width: bw, height: H, class: "mgc-hit" }));
+      var tip = svg("title");
+      tip.textContent = f.fmt(lo + i * binW) + " – " + f.fmt(lo + (i + 1) * binW);
+      g.appendChild(tip);
+      (function (bin, group) {
+        group.addEventListener("mouseenter", function () {
+          group.classList.add("mgc-bin-active");
+          self.highlightBin(bin);
+        });
+        group.addEventListener("mouseleave", function () {
+          group.classList.remove("mgc-bin-active");
+          self.highlighter.clear();
+        });
+      })(i, g);
+      s.appendChild(g);
+    }
+
+    var dots = svg("g", { class: "mgc-strip-dots" });
+    if (!whole) {
+      this._stripAll.forEach(function (r) {
+        dots.appendChild(svg("circle", { cx: xOf(r.value), cy: yOf(r), r: 1.6, class: "mgc-strip-all" }));
+      });
+    }
+    evenSample(rows, STRIP_MAX).forEach(function (r) {
+      dots.appendChild(svg("circle", {
+        cx: xOf(r.value), cy: yOf(r), r: whole ? 1.8 : 2.4,
+        class: "mgc-strip-view", style: "fill:" + fillOf(r.value),
+      }));
+    });
+    s.appendChild(dots);
+
+    if (o.stat !== "sum") {
+      s.appendChild(svg("line", {
+        x1: xOf(this.overall.value), x2: xOf(this.overall.value), y1: 0, y2: H, class: "mgc-mean-all",
+      }));
+      if (!whole) {
+        s.appendChild(svg("line", {
+          x1: xOf(view.value), x2: xOf(view.value), y1: 0, y2: H, class: "mgc-mean-view",
+        }));
+      }
+    }
+
+    var lab = function (x, anchor, text) {
+      var t = svg("text", { x: x, y: H + 11, "text-anchor": anchor, class: "mgc-axis" });
+      t.textContent = text;
+      return t;
+    };
+    s.appendChild(lab(0, "start", f.fmt(lo)));
+    s.appendChild(lab(W, "end", f.fmt(hi)));
+
+    var wrap = el("div", "mgc-position-wrap");
+    wrap.appendChild(s);
+    if (!whole) wrap.appendChild(this.legend());
+    return wrap;
+  };
+
+  // Two histograms on the same bins, one above the other: the features in
+  // view (in the map's colors) and all features (grey), each scaled to its
+  // own tallest bar and marked with its own mean. When the whole layer is in
+  // view, a single histogram in the map's colors.
+  ViewSummaryControl.prototype.splitSvg = function (rows, view, whole) {
+    var self = this;
+    var o = this.o;
+    var L = o.labels;
+    var f = this.f;
+    var lo = this.lo;
+    var hi = this.hi;
+    var bins = o.bins;
+    var colors = this.binColors();
+    var accent = o.color || "#1f6feb";
+    var viewBins = histogram(rows, lo, hi, bins);
+
+    var W = 240;
+    var rowH = 26;
+    var labelH = 11;
+    var gap = 6;
+    var panels = whole
+      ? [{ counts: this.allBins, label: L.whole_map + " (" + f.int(this.overall.n) + ")", colored: true, mean: this.overall.value, meanClass: "mgc-mean-all" }]
+      : [
+          { counts: viewBins, label: L.view + " (" + f.int(view.n) + ")", colored: true, mean: view.value, meanClass: "mgc-mean-view" },
+          { counts: this.allBins, label: L.all + " (" + f.int(this.overall.n) + ")", colored: false, mean: this.overall.value, meanClass: "mgc-mean-all" },
+        ];
+    var totalH = panels.length * (labelH + rowH) + (panels.length - 1) * gap;
+    var s = svg("svg", {
+      viewBox: "0 0 " + W + " " + (totalH + 13),
+      class: "mgc-split",
+      role: "img",
+      "aria-label": panels.map(function (p) { return p.label; }).join(" / "),
+    });
+    var xOf = function (v) {
+      return hi > lo ? ((v - lo) / (hi - lo)) * W : W / 2;
+    };
+    var bw = W / bins;
+
+    panels.forEach(function (p, k) {
+      var top = k * (labelH + rowH + gap);
+      var base = top + labelH + rowH;
+      var t = svg("text", { x: 0, y: top + 8, class: "mgc-split-label" });
+      t.textContent = p.label;
+      s.appendChild(t);
+      var max = Math.max.apply(null, p.counts) || 1;
+      for (var i = 0; i < bins; i++) {
+        if (!p.counts[i]) continue;
+        var h = Math.max((p.counts[i] / max) * rowH, 1);
+        s.appendChild(svg("rect", {
+          x: i * bw + 0.5, y: base - h, width: bw - 1, height: h,
+          class: p.colored ? "mgc-bar-view mgc-split-bar" : "mgc-bar-all mgc-split-bar",
+          style: p.colored ? "fill:" + (colors ? colors[i] : accent) : "",
+          "data-bin": i,
+        }));
+      }
+      s.appendChild(svg("line", { x1: 0, x2: W, y1: base + 0.5, y2: base + 0.5, class: "mgc-split-base" }));
+      if (o.stat !== "sum") {
+        s.appendChild(svg("line", {
+          x1: xOf(p.mean), x2: xOf(p.mean), y1: top + labelH, y2: base, class: p.meanClass,
+        }));
+      }
+    });
+
+    // Hover bands across both histograms, on top so they catch the pointer.
+    var binW = (hi - lo) / bins;
+    for (var i = 0; i < bins; i++) {
+      var g = svg("g", { class: "mgc-bin" });
+      g.appendChild(svg("rect", { x: i * bw, y: labelH, width: bw, height: totalH - labelH, class: "mgc-hit" }));
+      var tip = svg("title");
+      tip.textContent = f.fmt(lo + i * binW) + " – " + f.fmt(lo + (i + 1) * binW) + ": " +
+        (whole ? "" : viewBins[i] + " " + L.view.toLowerCase() + " / ") +
+        this.allBins[i] + " " + L.all.toLowerCase();
+      g.appendChild(tip);
+      (function (bin, group) {
+        group.addEventListener("mouseenter", function () {
+          group.classList.add("mgc-bin-active");
+          s.querySelectorAll('.mgc-split-bar[data-bin="' + bin + '"]').forEach(function (r) {
+            r.classList.add("mgc-split-active");
+          });
+          self.highlightBin(bin);
+        });
+        group.addEventListener("mouseleave", function () {
+          group.classList.remove("mgc-bin-active");
+          s.querySelectorAll(".mgc-split-active").forEach(function (r) {
+            r.classList.remove("mgc-split-active");
+          });
+          self.highlighter.clear();
+        });
+      })(i, g);
+      s.appendChild(g);
+    }
+
+    var lab = function (x, anchor, text) {
+      var t = svg("text", { x: x, y: totalH + 11, "text-anchor": anchor, class: "mgc-axis" });
+      t.textContent = text;
+      return t;
+    };
+    s.appendChild(lab(0, "start", f.fmt(lo)));
+    s.appendChild(lab(W, "end", f.fmt(hi)));
+
+    var wrap = el("div", "mgc-position-wrap");
+    wrap.appendChild(s);
+    return wrap;
+  };
+
+  // With stat = "sum" the value in view is not on the scale of single
+  // values, so the bar shows the share of the total that is in view.
+  ViewSummaryControl.prototype.shareSvg = function (view) {
+    var o = this.o;
+    var share = this.overall.value !== 0 ? view.value / this.overall.value : 0;
+    share = Math.min(Math.max(share, 0), 1);
+    var W = 240;
+    var s = svg("svg", {
+      viewBox: "0 0 " + W + " 22",
+      class: "mgc-position",
+      role: "img",
+      "aria-label": this.f.share(view.value, this.overall.value) + " " + o.labels.share,
+    });
+    s.appendChild(svg("rect", { x: 0, y: 4, width: W, height: 8, class: "mgc-share-track" }));
+    s.appendChild(svg("rect", {
+      x: 0, y: 4, width: Math.max(share * W, 1), height: 8,
+      class: "mgc-share-fill", style: "fill:" + (o.color || "#1f6feb"),
+    }));
+    var t = svg("text", { x: W, y: 21, "text-anchor": "end", class: "mgc-axis" });
+    t.textContent = this.f.share(view.value, this.overall.value) + " " + o.labels.share;
+    s.appendChild(t);
     return s;
   };
 
