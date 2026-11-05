@@ -43,6 +43,16 @@ test_that("add_view_ranking() stores its settings, one per layer and order", {
   expect_null(r[["deptos desc"]]$title)
 })
 
+test_that("fade is stored for the summary and the ranking", {
+  m <- base_map() |>
+    add_view_summary("deptos", "growth", fade = "moving") |>
+    add_view_ranking("deptos", "growth", "department", fade = "moving")
+  expect_equal(context_of(m)$view_summary$deptos$fade, "moving")
+  expect_equal(context_of(m)$view_ranking[["deptos desc"]]$fade, "moving")
+  expect_equal(context_of(base_map() |> add_view_summary("deptos", "growth"))$view_summary$deptos$fade, "none")
+  expect_error(add_view_summary(base_map(), "deptos", "growth", fade = "glass"), "should be one of")
+})
+
 test_that("add_view_ranking() validates its arguments", {
   m <- base_map()
   expect_error(add_view_ranking(m, "deptos", "growth"), "name_column")

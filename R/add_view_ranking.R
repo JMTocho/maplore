@@ -21,6 +21,9 @@
 #'   and blue otherwise.
 #' @param highlight_color Color of the outline drawn around a feature when
 #'   hovering over its name.
+#' @param fade `"moving"` fades the panel while the map is panned or zoomed,
+#'   so the map shows through, and brings it back when the map stops.
+#'   `"none"` (the default) keeps it always solid.
 #' @param collapsible If `TRUE`, adds a button to collapse the panel down to
 #'   its title and the first name.
 #'
@@ -68,6 +71,7 @@ add_view_ranking <- function(
   width = 240,
   color = NULL,
   highlight_color = "#1f2328",
+  fade = c("none", "moving"),
   collapsible = TRUE,
   collapsed = NULL,
   labels = context_labels()
@@ -89,6 +93,7 @@ add_view_ranking <- function(
   check_string(color, "color", allow_null = TRUE)
   check_string(highlight_color, "highlight_color")
   check_flag(collapsible, "collapsible")
+  fade <- match.arg(fade)
   check_flag(collapsed, "collapsed", allow_null = TRUE)
   position <- check_position(position)
   check_labels(labels)
@@ -112,6 +117,7 @@ add_view_ranking <- function(
     width = width,
     color = color,
     highlight_color = highlight_color,
+    fade = fade,
     collapsible = collapsible,
     collapsed = collapsed,
     labels = unclass(labels)

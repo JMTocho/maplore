@@ -661,6 +661,24 @@
     if (o.color) c.style.setProperty("--mgc-accent", o.color);
     this.container = c;
 
+    // fade = "moving": the panel fades while the map moves, so the map
+    // shows through, and comes back when it stops.
+    this._offFade = function () {};
+    if (o.fade === "moving") {
+      var start = function () {
+        c.classList.add("mgc-moving");
+      };
+      var end = function () {
+        c.classList.remove("mgc-moving");
+      };
+      map.on("movestart", start);
+      map.on("moveend", end);
+      this._offFade = function () {
+        map.off("movestart", start);
+        map.off("moveend", end);
+      };
+    }
+
     var header = el("div", "mgc-header");
     this.titleEl = el("span", "mgc-title");
     this.miniValueEl = el("span", "mgc-mini-value");
@@ -687,6 +705,12 @@
     if (start == null) start = o.collapsible && map.getCanvas().clientWidth < 480;
     this.setCollapsed(!!start && o.collapsible, true);
   }
+
+  Panel.prototype.destroy = function () {
+    this._offFade();
+    var c = this.container;
+    if (c.parentNode) c.parentNode.removeChild(c);
+  };
 
   Panel.prototype.setCollapsed = function (collapsed, silent) {
     var L = this.labels;

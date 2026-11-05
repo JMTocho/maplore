@@ -22,6 +22,7 @@ add_view_ranking(
   width = 240,
   color = NULL,
   highlight_color = "#1f2328",
+  fade = c("none", "moving"),
   collapsible = TRUE,
   collapsed = NULL,
   labels = context_labels()
@@ -73,6 +74,10 @@ and blue otherwise.}
 
 \item{highlight_color}{Color of the outline drawn around a feature when
 hovering over its name.}
+
+\item{fade}{\code{"moving"} fades the panel while the map is panned or zoomed,
+so the map shows through, and brings it back when the map stops.
+\code{"none"} (the default) keeps it always solid.}
 
 \item{collapsible}{If \code{TRUE}, adds a button to collapse the panel down to
 its title and the first name.}

@@ -51,8 +51,7 @@
 
   ViewRankingControl.prototype.onRemove = function () {
     this.stop();
-    var c = this.panel.container;
-    if (c.parentNode) c.parentNode.removeChild(c);
+    this.panel.destroy();
     this.map = null;
   };
 

@@ -29,6 +29,7 @@ add_view_summary(
   style = c("full", "compact", "mini"),
   show_area = NULL,
   area_unit = c("km2", "mi2"),
+  fade = c("none", "moving"),
   collapsible = TRUE,
   collapsed = NULL,
   references = NULL,
@@ -129,6 +130,10 @@ globe does not fill the screen, or the map is tilted towards the
 horizon.}
 
 \item{area_unit}{Unit for the area: \code{"km2"} (the default) or \code{"mi2"}.}
+
+\item{fade}{\code{"moving"} fades the panel while the map is panned or zoomed,
+so the map shows through, and brings it back when the map stops.
+\code{"none"} (the default) keeps it always solid.}
 
 \item{collapsible}{If \code{TRUE}, adds a button to collapse the panel down to
 its title and value.}

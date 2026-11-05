@@ -588,3 +588,21 @@
   padding: 5px 10px;
   color: var(--mgc-muted);
 }
+
+/* ------------------------------------------------------------------ */
+/* fade = "moving": panels fade while the map moves                    */
+/* ------------------------------------------------------------------ */
+
+.mapgl-context-panel {
+  transition: opacity 0.2s ease;
+}
+
+.mapgl-context-panel.mgc-moving {
+  opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapgl-context-panel {
+    transition: none;
+  }
+}

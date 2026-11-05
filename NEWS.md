@@ -17,6 +17,9 @@
 * `add_feature_search()` gains `collapsed`: the search box starts folded
   into a button with a magnifying glass, which opens it, and folds back
   when it loses focus while empty. Useful on small maps, such as on phones.
+* `add_view_summary()` and `add_view_ranking()` gain `fade = "moving"`:
+  the panels fade while the map is panned or zoomed, so the map shows
+  through, and come back when it stops.
 * New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
   `ref_below`, `ref_same` and `search_open`.
 * maplore now imports jsonlite, which mapgl already uses, to read the

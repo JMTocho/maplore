@@ -93,6 +93,9 @@
 #' @param area_unit Unit for the area: `"km2"` (the default) or `"mi2"`.
 #' @param compact Deprecated: `compact = TRUE` is the same as
 #'   `style = "compact"`.
+#' @param fade `"moving"` fades the panel while the map is panned or zoomed,
+#'   so the map shows through, and brings it back when the map stops.
+#'   `"none"` (the default) keeps it always solid.
 #' @param collapsible If `TRUE`, adds a button to collapse the panel down to
 #'   its title and value.
 #' @param collapsed Whether the panel starts collapsed. `NULL` (the default)
@@ -159,6 +162,7 @@ add_view_summary <- function(
   style = c("full", "compact", "mini"),
   show_area = NULL,
   area_unit = c("km2", "mi2"),
+  fade = c("none", "moving"),
   collapsible = TRUE,
   collapsed = NULL,
   references = NULL,
@@ -186,6 +190,7 @@ add_view_summary <- function(
   check_flag(compact, "compact", allow_null = TRUE)
   check_flag(show_area, "show_area", allow_null = TRUE)
   check_flag(collapsible, "collapsible")
+  fade <- match.arg(fade)
   check_flag(collapsed, "collapsed", allow_null = TRUE)
   stat <- match.arg(stat)
   area_unit <- match.arg(area_unit)
@@ -228,6 +233,7 @@ add_view_summary <- function(
     style = style,
     show_area = show_area,
     area_unit = area_unit,
+    fade = fade,
     collapsible = collapsible,
     collapsed = collapsed,
     labels = unclass(labels)
