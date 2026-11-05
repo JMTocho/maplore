@@ -59,6 +59,8 @@ Options:
   and value. On maps narrower than 480 px, such as on phones, the panel
   starts collapsed; `collapsed = FALSE` keeps it open and
   `collapsible = FALSE` removes the button.
+- `fade = "moving"`: the panel fades while the map is panned or zoomed,
+  so the map shows through, and comes back when the map stops.
 - `chart`: the chart at the bottom of the panel, shown below.
 - `references`: other values to compare the view with, shown below.
 - `color`: one color for the chart instead of the map’s colors.
@@ -178,6 +180,9 @@ japan |>
   )
 ```
 
+Use `n` to show fewer entries, such as `n = 3` on small maps. Like the
+summary, the ranking takes `fade = "moving"`, `collapsed` and `width`.
+
 ## Is this value high or low? `add_context_tooltip()`
 
 A tooltip that shows a feature’s value together with its rank, the share
@@ -217,6 +222,37 @@ data.
 japan |>
   add_feature_search(layer_id = "prefectures", search_column = "prefecture")
 ```
+
+On small maps, such as on phones, `collapsed = TRUE` folds the search
+box into a button with a magnifying glass, which opens it. It folds back
+when it loses focus while empty, and Escape closes it. `width` sets the
+width of the open box.
+
+``` r
+
+japan |>
+  add_feature_search(
+    layer_id = "prefectures",
+    search_column = "prefecture",
+    collapsed = TRUE,
+    width = 200
+  )
+```
+
+## Making room on small screens
+
+On a phone, several panels can cover the map and the controls of mapgl,
+such as its legend or navigation buttons. A few options help:
+
+- `style = "mini"` or `chart = "none"` for a shorter summary.
+- `n = 3` for a shorter ranking.
+- `collapsed = TRUE` to start the search box, the summary or the ranking
+  collapsed. The summary and the ranking already start collapsed on maps
+  narrower than 480 px.
+- `width` to make each panel narrower.
+- `fade = "moving"`, so the panels give way to the map while it moves.
+- `position`, to place each component in a different corner, away from
+  the legend.
 
 ## Point layers
 
