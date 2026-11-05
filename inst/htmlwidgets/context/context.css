@@ -553,6 +553,37 @@
   text-align: right;
 }
 
+/* Collapsed search: only the round button shows */
+
+.mapgl-context-search .mgc-search-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  background: var(--mgc-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  color: var(--mgc-text);
+  cursor: pointer;
+}
+
+.mapgl-context-search .mgc-search-button:hover,
+.mapgl-context-search .mgc-search-button:focus-visible {
+  background: #fff;
+}
+
+.mapgl-context-search.mgc-search-collapsed .mgc-search-button {
+  display: flex;
+}
+
+.mapgl-context-search.mgc-search-collapsed .mgc-search-input,
+.mapgl-context-search.mgc-search-collapsed .mgc-search-list {
+  display: none;
+}
+
 .mapgl-context-search .mgc-search-none {
   padding: 5px 10px;
   color: var(--mgc-muted);

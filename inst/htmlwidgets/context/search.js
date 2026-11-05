@@ -57,6 +57,23 @@
     this.input = input;
     this.list = list;
 
+    // Collapsed: a round button with a magnifying glass, which opens the box.
+    // The box folds back when it loses focus while empty.
+    if (o.collapsed) {
+      var button = el("button", "mgc-search-button");
+      button.type = "button";
+      button.setAttribute("aria-label", L.search_open);
+      button.title = L.search_open;
+      button.appendChild(searchIcon());
+      button.addEventListener("click", function () {
+        self.setCollapsed(false);
+        input.focus();
+      });
+      c.insertBefore(button, input);
+      this.button = button;
+      this.setCollapsed(true);
+    }
+
     input.addEventListener("input", function () {
       self.search(input.value);
     });
@@ -74,8 +91,11 @@
       } else if (e.key === "Escape") {
         if (self.matches.length) {
           self.close();
-        } else {
+        } else if (input.value) {
           input.value = "";
+        } else if (o.collapsed) {
+          self.setCollapsed(true);
+          self.button.focus();
         }
       }
     });
@@ -83,12 +103,22 @@
     input.addEventListener("blur", function () {
       setTimeout(function () {
         self.close();
+        if (o.collapsed && !input.value && document.activeElement !== input) {
+          self.setCollapsed(true);
+        }
       }, 150);
     });
     input.addEventListener("focus", function () {
       if (input.value) self.search(input.value);
     });
     return c;
+  };
+
+  FeatureSearchControl.prototype.setCollapsed = function (collapsed) {
+    this.collapsed = collapsed;
+    this.container.classList.toggle("mgc-search-collapsed", collapsed);
+    this.container.style.width = collapsed ? "" : this.o.width + "px";
+    if (this.button) this.button.setAttribute("aria-expanded", String(!collapsed));
   };
 
   FeatureSearchControl.prototype.onRemove = function () {
@@ -185,6 +215,14 @@
     this.close();
     this.highlighter.goTo(m.feature);
   };
+
+  // A magnifying glass, drawn with the text color.
+  function searchIcon() {
+    var s = U.svg("svg", { viewBox: "0 0 20 20", width: 16, height: 16, "aria-hidden": "true" });
+    s.appendChild(U.svg("circle", { cx: 8.5, cy: 8.5, r: 5.5, fill: "none", stroke: "currentColor", "stroke-width": 2 }));
+    s.appendChild(U.svg("line", { x1: 12.6, y1: 12.6, x2: 17, y2: 17, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round" }));
+    return s;
+  }
 
   C.components.feature_search = function (map, x, o) {
     var data = C.layerData(map, x, o.layer_id);

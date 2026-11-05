@@ -14,8 +14,11 @@
     besides the whole map: fixed numbers, such as a target, or groups of
     features defined with the new `reference_group()`, such as a province.
     Their values are computed in R with the panel's statistic and weight.
+* `add_feature_search()` gains `collapsed`: the search box starts folded
+  into a button with a magnifying glass, which opens it, and folds back
+  when it loses focus while empty. Useful on small maps, such as on phones.
 * New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
-  `ref_below` and `ref_same`.
+  `ref_below`, `ref_same` and `search_open`.
 * maplore now imports jsonlite, which mapgl already uses, to read the
   layer's data in R.
 

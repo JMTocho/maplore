@@ -10,6 +10,7 @@ add_feature_search(
   search_column,
   detail_column = NULL,
   placeholder = NULL,
+  collapsed = FALSE,
   max_results = 8,
   locale = "en-US",
   position = "top-right",
@@ -31,6 +32,10 @@ apart features with the same name, such as the province.}
 
 \item{placeholder}{Text shown in the empty search box. \code{NULL} (the
 default) uses the \code{search_placeholder} label, "Search…".}
+
+\item{collapsed}{If \code{TRUE}, the search box starts folded into a button
+with a magnifying glass, which opens it; it folds back when it loses
+focus while empty. Useful on small maps, such as on phones.}
 
 \item{max_results}{Maximum number of suggestions.}
 

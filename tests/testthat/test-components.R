@@ -75,6 +75,12 @@ test_that("add_feature_search() stores its settings", {
   expect_equal(s$detail_column, "province")
   expect_equal(s$max_results, 5)
   expect_null(s$placeholder)
+  expect_false(s$collapsed)
+
+  folded <- base_map() |> add_feature_search("deptos", "department", collapsed = TRUE, width = 180)
+  expect_true(context_of(folded)$feature_search$deptos$collapsed)
+  expect_equal(context_of(folded)$feature_search$deptos$width, 180)
+  expect_error(add_feature_search(base_map(), "deptos", "department", collapsed = NA), "`collapsed`")
 
   expect_error(add_feature_search(base_map(), "deptos", "nope"), "Column `nope` not found")
   expect_error(add_feature_search(base_map(), "deptos", "department", max_results = 0), "`max_results`")

@@ -15,6 +15,9 @@
 #' @param search_column Column to search, such as the feature names.
 #' @param detail_column Optional column shown next to each suggestion to tell
 #'   apart features with the same name, such as the province.
+#' @param collapsed If `TRUE`, the search box starts folded into a button
+#'   with a magnifying glass, which opens it; it folds back when it loses
+#'   focus while empty. Useful on small maps, such as on phones.
 #' @param placeholder Text shown in the empty search box. `NULL` (the
 #'   default) uses the `search_placeholder` label, "Search…".
 #' @param max_results Maximum number of suggestions.
@@ -46,6 +49,7 @@ add_feature_search <- function(
   search_column,
   detail_column = NULL,
   placeholder = NULL,
+  collapsed = FALSE,
   max_results = 8,
   locale = "en-US",
   position = "top-right",
@@ -58,6 +62,7 @@ add_feature_search <- function(
   check_string(search_column, "search_column")
   check_string(detail_column, "detail_column", allow_null = TRUE)
   check_string(placeholder, "placeholder", allow_null = TRUE)
+  check_flag(collapsed, "collapsed")
   check_number(max_results, "max_results", min = 1, max = 50)
   check_string(locale, "locale")
   check_number(width, "width", min = 100)
@@ -71,6 +76,7 @@ add_feature_search <- function(
     search_column = search_column,
     detail_column = detail_column,
     placeholder = placeholder,
+    collapsed = collapsed,
     max_results = max_results,
     locale = locale,
     position = position,
