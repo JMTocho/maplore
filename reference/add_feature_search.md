@@ -16,6 +16,7 @@ add_feature_search(
   search_column,
   detail_column = NULL,
   placeholder = NULL,
+  collapsed = FALSE,
   max_results = 8,
   locale = "en-US",
   position = "top-right",
@@ -52,6 +53,12 @@ add_feature_search(
 
   Text shown in the empty search box. `NULL` (the default) uses the
   `search_placeholder` label, "Search…".
+
+- collapsed:
+
+  If `TRUE`, the search box starts folded into a button with a
+  magnifying glass, which opens it; it folds back when it loses focus
+  while empty. Useful on small maps, such as on phones.
 
 - max_results:
 

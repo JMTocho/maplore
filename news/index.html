@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">maplore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,26 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.0.9001" id="maplore-0009001">maplore 0.0.0.9001<a class="anchor" aria-label="anchor" href="#maplore-0009001"></a></h2>
+<ul><li>
+<code><a href="../reference/add_view_summary.html">add_view_summary()</a></code> gains:
+<ul><li>
+<code>style</code>: <code>"full"</code> (the default), <code>"compact"</code> or <code>"mini"</code>, a strip of three figures: the features in view, the statistic and the area of the view. <code>compact = TRUE</code> still works and means <code>style = "compact"</code>.</li>
+<li>
+<code>show_area</code> and <code>area_unit</code>: the area of the Earth covered by the screen, in km² or mi².</li>
+<li>
+<code>chart</code>: the chart at the bottom of the panel. <code>"histogram"</code> (the default), <code>"position"</code> (a bar of all values with the view and the whole map marked on it), <code>"strip"</code> (one dot per feature), <code>"split"</code> (two histograms, the view above all features) or <code>"none"</code>.</li>
+<li>
+<code>references</code>: up to three other values to compare the view with, besides the whole map: fixed numbers, such as a target, or groups of features defined with the new <code><a href="../reference/reference_group.html">reference_group()</a></code>, such as a province. Their values are computed in R with the panel’s statistic and weight.</li>
+</ul></li>
+<li>
+<code><a href="../reference/add_feature_search.html">add_feature_search()</a></code> gains <code>collapsed</code>: the search box starts folded into a button with a magnifying glass, which opens it, and folds back when it loses focus while empty. Useful on small maps, such as on phones.</li>
+<li>
+<code><a href="../reference/add_view_summary.html">add_view_summary()</a></code> and <code><a href="../reference/add_view_ranking.html">add_view_ranking()</a></code> gain <code>fade = "moving"</code>: the panels fade while the map is panned or zoomed, so the map shows through, and come back when it stops.</li>
+<li>New texts in <code><a href="../reference/context_labels.html">context_labels()</a></code>: <code>area_zoom_in</code>, <code>ref_above</code>, <code>ref_below</code>, <code>ref_same</code> and <code>search_open</code>.</li>
+<li>maplore now imports jsonlite, which mapgl already uses, to read the layer’s data in R.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9000" id="maplore-0009000">maplore 0.0.0.9000<a class="anchor" aria-label="anchor" href="#maplore-0009000"></a></h2>
 <ul><li>First development version.</li>
 <li>
@@ -57,7 +77,8 @@
 <code><a href="../reference/context_labels.html">context_labels()</a></code>: texts for all the components, in English or Spanish.</li>
 <li>Datasets: <code>ar_departments</code>, <code>earthquakes</code> and <code>jp_prefectures</code>.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -15,7 +15,7 @@ places around the world, this searches your data."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">maplore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,7 @@ places around the world, this searches your data.</p>
 <span>  <span class="va">search_column</span>,</span>
 <span>  detail_column <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  placeholder <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  collapsed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_results <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  locale <span class="op">=</span> <span class="st">"en-US"</span>,</span>
 <span>  position <span class="op">=</span> <span class="st">"top-right"</span>,</span>
@@ -101,6 +102,12 @@ apart features with the same name, such as the province.</p></dd>
 <dt id="arg-placeholder">placeholder<a class="anchor" aria-label="anchor" href="#arg-placeholder"></a></dt>
 <dd><p>Text shown in the empty search box. <code>NULL</code> (the
 default) uses the <code>search_placeholder</code> label, "Search…".</p></dd>
+
+
+<dt id="arg-collapsed">collapsed<a class="anchor" aria-label="anchor" href="#arg-collapsed"></a></dt>
+<dd><p>If <code>TRUE</code>, the search box starts folded into a button
+with a magnifying glass, which opens it; it folds back when it loses
+focus while empty. Useful on small maps, such as on phones.</p></dd>
 
 
 <dt id="arg-max-results">max_results<a class="anchor" aria-label="anchor" href="#arg-max-results"></a></dt>

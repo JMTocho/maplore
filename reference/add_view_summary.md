@@ -30,11 +30,14 @@ add_view_summary(
   color = NULL,
   highlight_color = "#1f2328",
   bins = 20,
+  chart = c("histogram", "position", "strip", "split", "none"),
   style = c("full", "compact", "mini"),
   show_area = NULL,
   area_unit = c("km2", "mi2"),
+  fade = c("none", "moving"),
   collapsible = TRUE,
   collapsed = NULL,
+  references = NULL,
   labels = context_labels(),
   compact = NULL
 )
@@ -145,6 +148,27 @@ add_view_summary(
 
   Number of histogram bins.
 
+- chart:
+
+  Chart at the bottom of the `"full"` style:
+
+  - `"histogram"` (the default): the values in view over the
+    distribution of all values.
+
+  - `"position"`: a bar spanning all values, in the map's colors, with
+    the value in view and the overall value marked on it. With
+    `stat = "sum"`, the share of the total that is in view.
+
+  - `"strip"`: one dot per feature along the scale of values, those in
+    view in the map's colors over all the others in grey. Above 2,000
+    features, an even sample of 2,000 is drawn.
+
+  - `"split"`: two histograms on the same scale, one above the other:
+    the features in view, in the map's colors, and all features, in
+    grey.
+
+  - `"none"`: no chart.
+
 - style:
 
   How much the panel shows:
@@ -168,6 +192,12 @@ add_view_summary(
 
   Unit for the area: `"km2"` (the default) or `"mi2"`.
 
+- fade:
+
+  `"moving"` fades the panel while the map is panned or zoomed, so the
+  map shows through, and brings it back when the map stops. `"none"`
+  (the default) keeps it always solid.
+
 - collapsible:
 
   If `TRUE`, adds a button to collapse the panel down to its title and
@@ -177,6 +207,16 @@ add_view_summary(
 
   Whether the panel starts collapsed. `NULL` (the default) starts
   collapsed on maps narrower than 480 pixels, such as on phones.
+
+- references:
+
+  Up to three other values to compare the view with, besides the whole
+  map, as a named list. Each one is either a single number, such as a
+  target, or a
+  [`reference_group()`](https://jmtocho.github.io/maplore/reference/reference_group.md)
+  of features, whose value is computed with the same `stat` and `weight`
+  as the panel. For example,
+  `list("CABA" = reference_group("province", "Ciudad Autonoma de Buenos Aires"), "Target" = 2)`.
 
 - labels:
 

@@ -16,6 +16,14 @@ or
 - [`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md)
   : Add a search box over the layer's own features
 
+## References
+
+Values to compare the view with in
+[`add_view_summary()`](https://jmtocho.github.io/maplore/reference/add_view_summary.md).
+
+- [`reference_group()`](https://jmtocho.github.io/maplore/reference/reference_group.md)
+  : A group of features to compare the view with
+
 ## Texts
 
 - [`context_labels()`](https://jmtocho.github.io/maplore/reference/context_labels.md)

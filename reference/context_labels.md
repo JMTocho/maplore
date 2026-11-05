@@ -30,7 +30,8 @@ view_summary_labels(lang = c("en", "es"), ...)
   `highest`, `lowest`, `share`, `view`, `all`. Ranking:
   `ranking_highest`, `ranking_lowest`, `in_view`, `rank_overall`.
   Context tooltip: `rank`, `higher_than`, `average_of_all`. Search:
-  `search_placeholder`, `search_none`. Area: `area_zoom_in`.
+  `search_placeholder`, `search_none`, `search_open`. Area:
+  `area_zoom_in`. References: `ref_above`, `ref_below`, `ref_same`.
 
 ## Value
 
@@ -74,7 +75,11 @@ context_labels("es")
 #>   average_of_all     promedio
 #>   search_placeholder Buscar…
 #>   search_none        Sin resultados
+#>   search_open        Buscar
 #>   area_zoom_in       Acercá el zoom, o incliná menos el mapa, para ver la superficie
+#>   ref_above          por encima de
+#>   ref_below          por debajo de
+#>   ref_same           igual a
 context_labels("en", title = "Visible now")
 #> <context_labels>
 #>   title              Visible now
@@ -106,5 +111,9 @@ context_labels("en", title = "Visible now")
 #>   average_of_all     the average
 #>   search_placeholder Search…
 #>   search_none        No matches
+#>   search_open        Search
 #>   area_zoom_in       Zoom in, or tilt the map less, to see the area in view
+#>   ref_above          above
+#>   ref_below          below
+#>   ref_same           same as
 ```
