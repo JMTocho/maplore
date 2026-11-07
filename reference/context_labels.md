@@ -3,9 +3,11 @@
 Returns the texts used by
 [`add_view_summary()`](https://jmtocho.github.io/maplore/reference/add_view_summary.md),
 [`add_view_ranking()`](https://jmtocho.github.io/maplore/reference/add_view_ranking.md),
-[`add_context_tooltip()`](https://jmtocho.github.io/maplore/reference/add_context_tooltip.md)
+[`add_context_tooltip()`](https://jmtocho.github.io/maplore/reference/add_context_tooltip.md),
+[`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md),
+[`add_map_notes()`](https://jmtocho.github.io/maplore/reference/add_map_notes.md)
 and
-[`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md).
+[`add_rank_morph()`](https://jmtocho.github.io/maplore/reference/add_rank_morph.md).
 Start from English or Spanish and override any text through `...`.
 
 ## Usage
@@ -31,7 +33,9 @@ view_summary_labels(lang = c("en", "es"), ...)
   `ranking_highest`, `ranking_lowest`, `in_view`, `rank_overall`.
   Context tooltip: `rank`, `higher_than`, `average_of_all`. Search:
   `search_placeholder`, `search_none`, `search_open`. Area:
-  `area_zoom_in`. References: `ref_above`, `ref_below`, `ref_same`.
+  `area_zoom_in`. References: `ref_above`, `ref_below`, `ref_same`. Map
+  notes: `notes_title`, `notes_source`, `notes_link`. Rank morph:
+  `morph_sort`, `morph_back`.
 
 ## Value
 
@@ -80,6 +84,11 @@ context_labels("es")
 #>   ref_above          por encima de
 #>   ref_below          por debajo de
 #>   ref_same           igual a
+#>   notes_title        Notas
+#>   notes_source       Fuente
+#>   notes_link         Más información
+#>   morph_sort         Ordenar ↕
+#>   morph_back         Volver al mapa
 context_labels("en", title = "Visible now")
 #> <context_labels>
 #>   title              Visible now
@@ -116,4 +125,9 @@ context_labels("en", title = "Visible now")
 #>   ref_above          above
 #>   ref_below          below
 #>   ref_same           same as
+#>   notes_title        Notes
+#>   notes_source       Source
+#>   notes_link         More information
+#>   morph_sort         Sort ↕
+#>   morph_back         Back to the map
 ```

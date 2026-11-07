@@ -15,6 +15,10 @@ or
   : Add a tooltip that puts each value in context
 - [`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md)
   : Add a search box over the layer's own features
+- [`add_map_notes()`](https://jmtocho.github.io/maplore/reference/add_map_notes.md)
+  : Add notes about the whole map
+- [`add_rank_morph()`](https://jmtocho.github.io/maplore/reference/add_rank_morph.md)
+  : Turn the map into a ranking of shapes
 
 ## References
 

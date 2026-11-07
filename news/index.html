@@ -59,7 +59,9 @@
 <code><a href="../reference/add_feature_search.html">add_feature_search()</a></code> gains <code>collapsed</code>: the search box starts folded into a button with a magnifying glass, which opens it, and folds back when it loses focus while empty. Useful on small maps, such as on phones.</li>
 <li>
 <code><a href="../reference/add_view_summary.html">add_view_summary()</a></code> and <code><a href="../reference/add_view_ranking.html">add_view_ranking()</a></code> gain <code>fade = "moving"</code>: the panels fade while the map is panned or zoomed, so the map shows through, and come back when it stops.</li>
-<li>New texts in <code><a href="../reference/context_labels.html">context_labels()</a></code>: <code>area_zoom_in</code>, <code>ref_above</code>, <code>ref_below</code>, <code>ref_same</code> and <code>search_open</code>.</li>
+<li>New <code><a href="../reference/add_map_notes.html">add_map_notes()</a></code>: a small “Notes” button that opens a panel with context about the whole map: the source of the data, notes on what the figures do not include, and a link to learn more.</li>
+<li>New <code><a href="../reference/add_rank_morph.html">add_rank_morph()</a></code>: a button that lifts the polygons of a layer out of the map and lines them up, sorted by a column, all at the same size, with their rank, name and value; another click sends them back. Meant for up to 30 features; above 50 it gives an error.</li>
+<li>New texts in <code><a href="../reference/context_labels.html">context_labels()</a></code>: <code>area_zoom_in</code>, <code>ref_above</code>, <code>ref_below</code>, <code>ref_same</code>, <code>search_open</code>, <code>notes_title</code>, <code>notes_source</code>, <code>notes_link</code>, <code>morph_sort</code> and <code>morph_back</code>.</li>
 <li>maplore now imports jsonlite, which mapgl already uses, to read the layer’s data in R.</li>
 </ul></div>
     <div class="section level2">

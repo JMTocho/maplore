@@ -196,6 +196,7 @@
       return {
         id: i,
         props: f.properties || {},
+        geometry: f.geometry,
         rings: rings,
         bbox: ringsBbox(rings),
         isPoint: !!f.geometry && (f.geometry.type === "Point" || f.geometry.type === "MultiPoint"),

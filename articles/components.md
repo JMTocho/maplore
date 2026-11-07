@@ -239,6 +239,52 @@ japan |>
   )
 ```
 
+## How do they rank? `add_rank_morph()`
+
+A button that lifts the shapes out of the map and lines them up, sorted
+by a column, all at the same size, with their rank, name and value
+below. Shapes keep their form and color, so readers see at once where
+each one is and how it ranks. Another click sends them back to their
+place.
+
+``` r
+
+japan |>
+  add_rank_morph(
+    layer_id = "prefectures",
+    column = "aged_65",
+    name_column = "prefecture",
+    suffix = "%",
+    title = "Share of people aged 65 and over, 2024"
+  )
+```
+
+While the shapes are out of the map, the map does not move, and the
+other maplore panels hide. If the shapes do not fit, the grid scrolls.
+It works with polygon layers of up to 50 features, and best with up to
+30, such as the provinces or states of a country. `duration` sets the
+length of the animation, in seconds; readers who turned on reduced
+motion in their system see the result without the animation.
+
+## Where do these data come from? `add_map_notes()`
+
+A small “Notes” button that opens a panel about the whole map: the
+source of the data, what the figures do not include, and a link to learn
+more. It starts collapsed, so it does not cover the map.
+
+``` r
+
+japan |>
+  add_map_notes(
+    source = "Statistics Bureau of Japan, Japan Statistical Yearbook 2026.",
+    notes = c(
+      "Share of the population aged 65 and over, in 2024.",
+      "Only five of the 47 prefectures are shown."
+    ),
+    link = "https://www.stat.go.jp/english/data/nenkan/"
+  )
+```
+
 ## Making room on small screens
 
 On a phone, several panels can cover the map and the controls of mapgl,
@@ -248,7 +294,7 @@ such as its legend or navigation buttons. A few options help:
 - `n = 3` for a shorter ranking.
 - `collapsed = TRUE` to start the search box, the summary or the ranking
   collapsed. The summary and the ranking already start collapsed on maps
-  narrower than 480 px.
+  narrower than 480 px, and the notes always do.
 - `width` to make each panel narrower.
 - `fade = "moving"`, so the panels give way to the map while it moves.
 - `position`, to place each component in a different corner, away from
@@ -256,7 +302,9 @@ such as its legend or navigation buttons. A few options help:
 
 ## Point layers
 
-All the components work with point layers too
+All the components except
+[`add_rank_morph()`](https://jmtocho.github.io/maplore/reference/add_rank_morph.md)
+work with point layers too
 ([`add_circle_layer()`](https://walker-data.com/mapgl/reference/add_circle_layer.html),
 [`add_symbol_layer()`](https://walker-data.com/mapgl/reference/add_symbol_layer.html)),
 clustered or not. On a clustered layer every point in view counts,
