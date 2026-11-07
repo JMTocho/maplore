@@ -96,6 +96,21 @@ test_that("add_feature_search() stores its settings", {
   expect_error(add_feature_search(base_map(), "deptos", "department", max_results = 0), "`max_results`")
 })
 
+test_that("add_map_notes() stores its settings and validates them", {
+  m <- base_map() |>
+    add_map_notes(source = "INDEC", notes = "Growth is the total change.", link = "https://www.indec.gob.ar")
+  n <- context_of(m)$map_notes$notes
+  expect_equal(n$source, "INDEC")
+  expect_equal(n$notes, list("Growth is the total change."))
+  expect_true(n$collapsed)
+  expect_equal(n$position, "bottom-left")
+
+  expect_error(add_map_notes(base_map()), "at least a `source`")
+  expect_error(add_map_notes(base_map(), notes = c("a", NA)), "non-empty notes")
+  expect_error(add_map_notes(base_map(), source = "x", link = "javascript:alert(1)"), "http")
+  expect_error(add_map_notes(list(), source = "x"), "must be created with")
+})
+
 test_that("every function rejects Shiny proxies", {
   proxy <- structure(list(), class = "maplibre_proxy")
   expect_error(add_view_ranking(proxy, "deptos", "growth", "department"), "Shiny proxies")

@@ -20,8 +20,12 @@
 * `add_view_summary()` and `add_view_ranking()` gain `fade = "moving"`:
   the panels fade while the map is panned or zoomed, so the map shows
   through, and come back when it stops.
+* New `add_map_notes()`: a small "Notes" button that opens a panel with
+  context about the whole map: the source of the data, notes on what the
+  figures do not include, and a link to learn more.
 * New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
-  `ref_below`, `ref_same` and `search_open`.
+  `ref_below`, `ref_same`, `search_open`, `notes_title`, `notes_source`
+  and `notes_link`.
 * maplore now imports jsonlite, which mapgl already uses, to read the
   layer's data in R.
 

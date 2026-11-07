@@ -26,7 +26,7 @@ context_dependency <- function() {
     # core.js first: the other scripts register themselves in it.
     script = c(
       "core.js", "viewsummary.js", "ranking.js", "tooltip.js",
-      "search.js"
+      "search.js", "notes.js"
     ),
     stylesheet = "context.css"
   )

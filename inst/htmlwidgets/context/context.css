@@ -606,3 +606,40 @@
     transition: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Map notes                                                           */
+/* ------------------------------------------------------------------ */
+
+.mapgl-context-panel.mgc-notes .mgc-header {
+  cursor: pointer;
+}
+
+.mgc-notes-icon {
+  flex: none;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--mgc-muted);
+}
+
+.mgc-notes-source {
+  margin-top: 6px;
+}
+
+.mgc-notes-list {
+  margin: 6px 0 0;
+  padding-left: 16px;
+}
+
+.mgc-notes-list li {
+  margin-top: 3px;
+}
+
+.mgc-notes-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--mgc-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
