@@ -362,7 +362,9 @@
     this.wasGlobe = !!p && (p.type === "globe" || p.name === "globe");
     if (this.wasGlobe) {
       map.setProjection({ type: "mercator" });
-      map.once("idle", go);
+      // One frame is enough for the flat projection to apply; waiting for
+      // "idle" would also wait for every tile to load.
+      map.once("render", go);
       map.triggerRepaint();
     } else {
       go();
