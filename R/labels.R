@@ -1,7 +1,7 @@
 #' Texts for the context components
 #'
 #' Returns the texts used by [add_view_summary()], [add_view_ranking()],
-#' [add_context_tooltip()], [add_feature_search()] and [add_map_notes()]. Start from English or
+#' [add_context_tooltip()], [add_feature_search()], [add_map_notes()] and [add_rank_morph()]. Start from English or
 #' Spanish and override any text through `...`.
 #'
 #' `view_summary_labels()` is the same function under its earlier name.
@@ -15,7 +15,7 @@
 #'   `higher_than`, `average_of_all`. Search: `search_placeholder`,
 #'   `search_none`, `search_open`. Area: `area_zoom_in`. References: `ref_above`,
 #'   `ref_below`, `ref_same`. Map notes: `notes_title`, `notes_source`,
-#'   `notes_link`.
+#'   `notes_link`. Rank morph: `morph_sort`, `morph_back`.
 #'
 #' @return A list of class `context_labels`.
 #' @export
@@ -64,7 +64,9 @@ context_labels <- function(lang = c("en", "es"), ...) {
       ref_same = "same as",
       notes_title = "Notes",
       notes_source = "Source",
-      notes_link = "More information"
+      notes_link = "More information",
+      morph_sort = "Sort \u2195",
+      morph_back = "Back to the map"
     ),
     es = list(
       title = "En esta vista",
@@ -103,7 +105,9 @@ context_labels <- function(lang = c("en", "es"), ...) {
       ref_same = "igual a",
       notes_title = "Notas",
       notes_source = "Fuente",
-      notes_link = "M\u00e1s informaci\u00f3n"
+      notes_link = "M\u00e1s informaci\u00f3n",
+      morph_sort = "Ordenar \u2195",
+      morph_back = "Volver al mapa"
     )
   )
 

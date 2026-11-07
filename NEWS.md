@@ -23,9 +23,13 @@
 * New `add_map_notes()`: a small "Notes" button that opens a panel with
   context about the whole map: the source of the data, notes on what the
   figures do not include, and a link to learn more.
+* New `add_rank_morph()`: a button that lifts the polygons of a layer out
+  of the map and lines them up, sorted by a column, all at the same size,
+  with their rank, name and value; another click sends them back. Meant
+  for up to 30 features; above 50 it gives an error.
 * New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
-  `ref_below`, `ref_same`, `search_open`, `notes_title`, `notes_source`
-  and `notes_link`.
+  `ref_below`, `ref_same`, `search_open`, `notes_title`, `notes_source`,
+  `notes_link`, `morph_sort` and `morph_back`.
 * maplore now imports jsonlite, which mapgl already uses, to read the
   layer's data in R.
 

@@ -111,11 +111,35 @@ test_that("add_map_notes() stores its settings and validates them", {
   expect_error(add_map_notes(list(), source = "x"), "must be created with")
 })
 
+test_that("add_rank_morph() stores its settings and validates them", {
+  m <- base_map() |>
+    add_rank_morph("deptos", "growth", "department", suffix = " %", title = "Growth")
+  r <- context_of(m)$rank_morph$deptos
+  expect_equal(r$column, "growth")
+  expect_equal(r$order, "desc")
+  expect_equal(r$duration, 1.6)
+  expect_equal(r$position, "top-right")
+  expect_true(nzchar(r$labels$morph_sort))
+
+  expect_error(add_rank_morph(base_map(), "deptos", "nope", "department"), "not found")
+  expect_error(add_rank_morph(base_map(), "deptos", "growth", "department", duration = -1), "duration")
+  many <- function(d) {
+    mapgl::maplibre() |> mapgl::add_fill_layer(id = "d", source = d, fill_color = "red")
+  }
+  mid <- ar_departments[ar_departments$province %in% c("La Pampa", "Mendoza"), ]
+  expect_warning(add_rank_morph(many(mid), "d", "growth", "department"), "up to 30")
+  expect_error(add_rank_morph(many(ar_departments), "d", "growth", "department"), "up to 50")
+  pts <- mapgl::maplibre() |>
+    mapgl::add_circle_layer(id = "pts", source = earthquakes[1:5, ], circle_color = "red")
+  expect_error(add_rank_morph(pts, "pts", "magnitude", "place"), "fill layer")
+})
+
 test_that("every function rejects Shiny proxies", {
   proxy <- structure(list(), class = "maplibre_proxy")
   expect_error(add_view_ranking(proxy, "deptos", "growth", "department"), "Shiny proxies")
   expect_error(add_context_tooltip(proxy, "deptos", "growth"), "Shiny proxies")
   expect_error(add_feature_search(proxy, "deptos", "department"), "Shiny proxies")
+  expect_error(add_rank_morph(proxy, "deptos", "growth", "department"), "Shiny proxies")
 })
 
 test_that("context_labels() covers every component in both languages", {

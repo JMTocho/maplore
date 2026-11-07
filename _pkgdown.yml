@@ -24,6 +24,7 @@ reference:
       - add_context_tooltip
       - add_feature_search
       - add_map_notes
+      - add_rank_morph
   - title: References
     desc: Values to compare the view with in `add_view_summary()`.
     contents:

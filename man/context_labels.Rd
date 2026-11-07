@@ -20,14 +20,14 @@ view_summary_labels(lang = c("en", "es"), ...)
 \code{higher_than}, \code{average_of_all}. Search: \code{search_placeholder},
 \code{search_none}, \code{search_open}. Area: \code{area_zoom_in}. References: \code{ref_above},
 \code{ref_below}, \code{ref_same}. Map notes: \code{notes_title}, \code{notes_source},
-\code{notes_link}.}
+\code{notes_link}. Rank morph: \code{morph_sort}, \code{morph_back}.}
 }
 \value{
 A list of class \code{context_labels}.
 }
 \description{
 Returns the texts used by \code{\link[=add_view_summary]{add_view_summary()}}, \code{\link[=add_view_ranking]{add_view_ranking()}},
-\code{\link[=add_context_tooltip]{add_context_tooltip()}}, \code{\link[=add_feature_search]{add_feature_search()}} and \code{\link[=add_map_notes]{add_map_notes()}}. Start from English or
+\code{\link[=add_context_tooltip]{add_context_tooltip()}}, \code{\link[=add_feature_search]{add_feature_search()}}, \code{\link[=add_map_notes]{add_map_notes()}} and \code{\link[=add_rank_morph]{add_rank_morph()}}. Start from English or
 Spanish and override any text through \code{...}.
 }
 \details{
