@@ -10,6 +10,7 @@ add_rank_morph(
   column,
   name_column,
   order = c("desc", "asc"),
+  n = 30,
   title = NULL,
   duration = 1.6,
   locale = "en-US",
@@ -33,6 +34,9 @@ GeoJSON.}
 \item{order}{\code{"desc"} (the default) puts the highest value first, \code{"asc"}
 the lowest.}
 
+\item{n}{Largest number of shapes in the grid, from 1 to 50. With more
+than 30, shapes become small and hard to recognise.}
+
 \item{title}{Optional title shown above the grid while it is visible.}
 
 \item{duration}{Length of the animation, in seconds.}
@@ -43,8 +47,9 @@ in \code{\link[=add_view_summary]{add_view_summary()}}.}
 \item{position}{Corner for the button: one of \code{"top-right"} (the
 default), \code{"top-left"}, \code{"bottom-right"} or \code{"bottom-left"}.}
 
-\item{labels}{Button texts, as returned by \code{\link[=context_labels]{context_labels()}}
-(\code{morph_sort} and \code{morph_back}).}
+\item{labels}{Texts, as returned by \code{\link[=context_labels]{context_labels()}}: \code{morph_sort}
+and \code{morph_back} for the button, \code{morph_highest} and \code{morph_lowest} for
+the line under the title.}
 }
 \value{
 The modified map object.
@@ -65,9 +70,11 @@ the grid. For small islands far from the main part of a feature (more
 than about twice its size away), the grid shows the main part only.
 
 The animation is meant for a few shapes, such as the provinces of a
-country: it works best with up to 30 features, gives a warning from 31
-to 50, and an error above 50, where shapes become too small to
-recognise. Readers who prefer reduced motion
+country. When the layer has more than \code{n} features, only the first \code{n}
+(the highest, or the lowest with \code{order = "asc"}) move to the grid, and
+the rest fade under it; a line under the title tells readers, such as
+"The 30 highest of 529". To show them all, group the features first,
+such as departments into provinces. Readers who prefer reduced motion
 (an operating system setting) see the result without the animation.
 }
 \examples{

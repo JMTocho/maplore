@@ -38,6 +38,10 @@
     this.items.sort(function (a, b) {
       return desc ? b.value - a.value : a.value - b.value;
     });
+    // Only the first n move; the rest stay in place and fade under the veil.
+    this.total = this.items.length;
+    this.rest = this.items.slice(o.n);
+    this.items = this.items.slice(0, o.n);
     this.state = "map";
     this.scroll = 0;
     this.maxScroll = 0;
@@ -103,7 +107,7 @@
     map.off("resize", this._resize);
     this.removeOverlays();
     box.classList.remove("mgc-morph-active");
-    [this.id, this.id + "-veil"].forEach(function (id) {
+    [this.id, this.id + "-veil", this.id + "-rest"].forEach(function (id) {
       if (map.getLayer(id)) map.removeLayer(id);
       if (map.getSource(id)) map.removeSource(id);
     });
@@ -203,8 +207,17 @@
   };
 
   RankMorphControl.prototype.titleHeight = function () {
-    if (!this.o.title) return 0;
-    return this.map.getCanvas().clientWidth < 600 ? 62 : 44;
+    var sub = this.rest.length > 0;
+    if (!this.o.title && !sub) return 0;
+    var h = !this.o.title ? 22 : (this.map.getCanvas().clientWidth < 600 ? 62 : 44);
+    return h + (sub ? 18 : 0);
+  };
+
+  // "The 30 highest of 529": tells readers that not every feature is shown.
+  RankMorphControl.prototype.subtitle = function () {
+    var L = this.o.labels;
+    var template = this.o.order === "asc" ? L.morph_lowest : L.morph_highest;
+    return template.replace("{n}", this.f.int(this.items.length)).replace("{total}", this.f.int(this.total));
   };
 
   // ---- drawing ----------------------------------------------------------------
@@ -249,6 +262,20 @@
     var map = this.map;
     if (map.getSource(this.id)) return;
     var o = this.o;
+    if (this.rest.length > 0) {
+      // Below the veil, so the shapes left out fade as the others move.
+      map.addSource(this.id + "-rest", { type: "geojson", data: { type: "FeatureCollection",
+        features: this.rest.map(function (it) {
+          return { type: "Feature", properties: it.props,
+            geometry: { type: "MultiPolygon", coordinates: it.polys } };
+        }) } });
+      map.addLayer({ id: this.id + "-rest", type: "fill", source: this.id + "-rest",
+        layout: { visibility: "none" }, paint: {
+          "fill-color": map.getPaintProperty(o.layer_id, "fill-color") || "#1f6feb",
+          "fill-opacity": map.getPaintProperty(o.layer_id, "fill-opacity") == null ? 1 :
+            map.getPaintProperty(o.layer_id, "fill-opacity"),
+        } });
+    }
     map.addSource(this.id + "-veil", { type: "geojson", data: {
       type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: WORLD } } });
     map.addLayer({ id: this.id + "-veil", type: "fill", source: this.id + "-veil",
@@ -262,9 +289,12 @@
 
   // ---- overlays: title and labels -------------------------------------------
   RankMorphControl.prototype.showTitle = function () {
-    if (!this.o.title) return;
+    var sub = this.rest.length > 0;
+    if (!this.o.title && !sub) return;
     var narrow = this.map.getCanvas().clientWidth < 600;
-    var t = el("div", "mgc-morph-title" + (narrow ? " mgc-morph-narrow" : ""), this.o.title);
+    var t = el("div", "mgc-morph-title" + (narrow ? " mgc-morph-narrow" : ""));
+    if (this.o.title) t.appendChild(el("div", "mgc-morph-title-text", this.o.title));
+    if (sub) t.appendChild(el("div", "mgc-morph-subtitle", this.subtitle()));
     // Room for the button when it sits in a top corner.
     var pos = this.o.position;
     if (pos === "top-right") t.style.paddingRight = (this.container.offsetWidth + 24) + "px";
@@ -351,6 +381,7 @@
       self.layout();
       self.showTitle();
       map.setLayoutProperty(self.o.layer_id, "visibility", "none");
+      if (map.getLayer(self.id + "-rest")) map.setLayoutProperty(self.id + "-rest", "visibility", "visible");
       self.animate(0, 1, function () {
         self.state = "row";
         self.button.disabled = false;
@@ -380,6 +411,7 @@
     this.removeOverlays();
     this.animate(1, 0, function () {
       map.setLayoutProperty(self.o.layer_id, "visibility", "visible");
+      if (map.getLayer(self.id + "-rest")) map.setLayoutProperty(self.id + "-rest", "visibility", "none");
       map.getSource(self.id).setData({ type: "FeatureCollection", features: [] });
       if (self.wasGlobe) map.setProjection({ type: "globe" });
       self.lock(false);

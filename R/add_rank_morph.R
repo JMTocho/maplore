@@ -14,9 +14,11 @@
 #' than about twice its size away), the grid shows the main part only.
 #'
 #' The animation is meant for a few shapes, such as the provinces of a
-#' country: it works best with up to 30 features, gives a warning from 31
-#' to 50, and an error above 50, where shapes become too small to
-#' recognise. Readers who prefer reduced motion
+#' country. When the layer has more than `n` features, only the first `n`
+#' (the highest, or the lowest with `order = "asc"`) move to the grid, and
+#' the rest fade under it; a line under the title tells readers, such as
+#' "The 30 highest of 529". To show them all, group the features first,
+#' such as departments into provinces. Readers who prefer reduced motion
 #' (an operating system setting) see the result without the animation.
 #'
 #' @param map A map created with [mapgl::maplibre()] or [mapgl::mapboxgl()].
@@ -26,14 +28,17 @@
 #' @param name_column Column with the name shown under each shape.
 #' @param order `"desc"` (the default) puts the highest value first, `"asc"`
 #'   the lowest.
+#' @param n Largest number of shapes in the grid, from 1 to 50. With more
+#'   than 30, shapes become small and hard to recognise.
 #' @param title Optional title shown above the grid while it is visible.
 #' @param duration Length of the animation, in seconds.
 #' @param locale,digits,prefix,suffix Number formatting for the values, as
 #'   in [add_view_summary()].
 #' @param position Corner for the button: one of `"top-right"` (the
 #'   default), `"top-left"`, `"bottom-right"` or `"bottom-left"`.
-#' @param labels Button texts, as returned by [context_labels()]
-#'   (`morph_sort` and `morph_back`).
+#' @param labels Texts, as returned by [context_labels()]: `morph_sort`
+#'   and `morph_back` for the button, `morph_highest` and `morph_lowest` for
+#'   the line under the title.
 #'
 #' @return The modified map object.
 #' @export
@@ -66,6 +71,7 @@ add_rank_morph <- function(
   column,
   name_column,
   order = c("desc", "asc"),
+  n = 30,
   title = NULL,
   duration = 1.6,
   locale = "en-US",
@@ -80,6 +86,8 @@ add_rank_morph <- function(
   check_string(column, "column")
   check_string(name_column, "name_column")
   order <- match.arg(order)
+  check_number(n, "n", min = 1, max = 50)
+  if (n != round(n)) stop("`n` must be a whole number.", call. = FALSE)
   check_string(title, "title", allow_null = TRUE)
   check_number(duration, "duration", min = 0, max = 10)
   check_string(locale, "locale")
@@ -97,21 +105,21 @@ add_rank_morph <- function(
     )
   }
   geojson <- check_columns(map, layer_id, c(column, name_column))
-  n <- lengths(regmatches(geojson, gregexpr('"type":"Feature"', geojson, fixed = TRUE)))
-  if (n > 50) {
-    stop(
-      sprintf(
-        "Layer \"%s\" has %d features: `add_rank_morph()` works with up to 50, so each shape stays big enough to recognise. Filter or group the data first.",
-        layer_id, n
+  total <- lengths(regmatches(geojson, gregexpr('"type":"Feature"', geojson, fixed = TRUE)))
+  if (total > n) {
+    message(sprintf(
+      paste0(
+        "Layer \"%s\" has %d features: `add_rank_morph()` will show the %d %s. ",
+        "To show them all, group them first, such as departments into provinces."
       ),
-      call. = FALSE
-    )
+      layer_id, total, n, if (order == "desc") "highest" else "lowest"
+    ))
   }
-  if (n > 30) {
+  if (min(n, total) > 30) {
     warning(
       sprintf(
-        "Layer \"%s\" has %d features: the shapes will be small. `add_rank_morph()` works best with up to 30.",
-        layer_id, n
+        "%d shapes will be small. `add_rank_morph()` works best with up to 30; see `n`.",
+        min(n, total)
       ),
       call. = FALSE
     )
@@ -123,6 +131,7 @@ add_rank_morph <- function(
     column = column,
     name_column = name_column,
     order = order,
+    n = as.integer(n),
     title = title,
     duration = duration,
     locale = locale,

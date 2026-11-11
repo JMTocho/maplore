@@ -20,7 +20,9 @@ view_summary_labels(lang = c("en", "es"), ...)
 \code{higher_than}, \code{average_of_all}. Search: \code{search_placeholder},
 \code{search_none}, \code{search_open}. Area: \code{area_zoom_in}. References: \code{ref_above},
 \code{ref_below}, \code{ref_same}. Map notes: \code{notes_title}, \code{notes_source},
-\code{notes_link}. Rank morph: \code{morph_sort}, \code{morph_back}.}
+\code{notes_link}. Rank morph: \code{morph_sort}, \code{morph_back},
+\code{morph_highest}, \code{morph_lowest} (\code{{n}} and \code{{total}} are replaced by
+the numbers).}
 }
 \value{
 A list of class \code{context_labels}.

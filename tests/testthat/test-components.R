@@ -127,8 +127,18 @@ test_that("add_rank_morph() stores its settings and validates them", {
     mapgl::maplibre() |> mapgl::add_fill_layer(id = "d", source = d, fill_color = "red")
   }
   mid <- ar_departments[ar_departments$province %in% c("La Pampa", "Mendoza"), ]
-  expect_warning(add_rank_morph(many(mid), "d", "growth", "department"), "up to 30")
-  expect_error(add_rank_morph(many(ar_departments), "d", "growth", "department"), "up to 50")
+  expect_warning(add_rank_morph(many(mid), "d", "growth", "department", n = 40), "up to 30")
+  expect_message(
+    m2 <- add_rank_morph(many(ar_departments), "d", "growth", "department"),
+    "show the 30 highest"
+  )
+  expect_equal(context_of(m2)$rank_morph$d$n, 30L)
+  expect_message(
+    add_rank_morph(many(mid), "d", "growth", "department", order = "asc", n = 10),
+    "show the 10 lowest"
+  )
+  expect_error(add_rank_morph(base_map(), "deptos", "growth", "department", n = 60), "n")
+  expect_error(add_rank_morph(base_map(), "deptos", "growth", "department", n = 2.5), "whole")
   pts <- mapgl::maplibre() |>
     mapgl::add_circle_layer(id = "pts", source = earthquakes[1:5, ], circle_color = "red")
   expect_error(add_rank_morph(pts, "pts", "magnitude", "place"), "fill layer")

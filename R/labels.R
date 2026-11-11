@@ -15,7 +15,9 @@
 #'   `higher_than`, `average_of_all`. Search: `search_placeholder`,
 #'   `search_none`, `search_open`. Area: `area_zoom_in`. References: `ref_above`,
 #'   `ref_below`, `ref_same`. Map notes: `notes_title`, `notes_source`,
-#'   `notes_link`. Rank morph: `morph_sort`, `morph_back`.
+#'   `notes_link`. Rank morph: `morph_sort`, `morph_back`,
+#'   `morph_highest`, `morph_lowest` (`{n}` and `{total}` are replaced by
+#'   the numbers).
 #'
 #' @return A list of class `context_labels`.
 #' @export
@@ -66,7 +68,9 @@ context_labels <- function(lang = c("en", "es"), ...) {
       notes_source = "Source",
       notes_link = "More information",
       morph_sort = "Sort \u2195",
-      morph_back = "Back to the map"
+      morph_back = "Back to the map",
+      morph_highest = "The {n} highest of {total}",
+      morph_lowest = "The {n} lowest of {total}"
     ),
     es = list(
       title = "En esta vista",
@@ -107,7 +111,9 @@ context_labels <- function(lang = c("en", "es"), ...) {
       notes_source = "Fuente",
       notes_link = "M\u00e1s informaci\u00f3n",
       morph_sort = "Ordenar \u2195",
-      morph_back = "Volver al mapa"
+      morph_back = "Volver al mapa",
+      morph_highest = "Los {n} m\u00e1s altos de {total}",
+      morph_lowest = "Los {n} m\u00e1s bajos de {total}"
     )
   )
 

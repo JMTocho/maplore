@@ -673,20 +673,36 @@
   font: 600 16px/1.3 system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--mgc-text);
   background: rgba(255, 255, 255, 0.92);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
   opacity: 0;
   transition: opacity 0.4s;
   pointer-events: none;
   z-index: 1;
 }
 
+.mgc-morph-title-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
 /* Narrow maps: up to two lines, in a smaller font. */
 .mgc-morph-title.mgc-morph-narrow {
   font-size: 14px;
+}
+
+.mgc-morph-narrow .mgc-morph-title-text {
   -webkit-line-clamp: 2;
+}
+
+.mgc-morph-subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--mgc-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mgc-morph-labels {

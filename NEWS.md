@@ -25,11 +25,13 @@
   figures do not include, and a link to learn more.
 * New `add_rank_morph()`: a button that lifts the polygons of a layer out
   of the map and lines them up, sorted by a column, all at the same size,
-  with their rank, name and value; another click sends them back. Meant
-  for up to 30 features; above 50 it gives an error.
+  with their rank, name and value; another click sends them back. `n`
+  (30 by default, up to 50) limits the grid to the highest or lowest
+  features, and a line under the title tells readers how many are shown.
 * New texts in `context_labels()`: `area_zoom_in`, `ref_above`,
   `ref_below`, `ref_same`, `search_open`, `notes_title`, `notes_source`,
-  `notes_link`, `morph_sort` and `morph_back`.
+  `notes_link`, `morph_sort`, `morph_back`, `morph_highest` and
+  `morph_lowest`.
 * maplore now imports jsonlite, which mapgl already uses, to read the
   layer's data in R.
 
