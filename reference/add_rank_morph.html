@@ -67,6 +67,7 @@ each one is and how it ranks.</p>
 <span>  <span class="va">column</span>,</span>
 <span>  <span class="va">name_column</span>,</span>
 <span>  order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"desc"</span>, <span class="st">"asc"</span><span class="op">)</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  duration <span class="op">=</span> <span class="fl">1.6</span>,</span>
 <span>  locale <span class="op">=</span> <span class="st">"en-US"</span>,</span>
@@ -104,6 +105,11 @@ GeoJSON.</p></dd>
 the lowest.</p></dd>
 
 
+<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
+<dd><p>Largest number of shapes in the grid, from 1 to 50. With more
+than 30, shapes become small and hard to recognise.</p></dd>
+
+
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
 <dd><p>Optional title shown above the grid while it is visible.</p></dd>
 
@@ -123,8 +129,9 @@ default), <code>"top-left"</code>, <code>"bottom-right"</code> or <code>"bottom-
 
 
 <dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
-<dd><p>Button texts, as returned by <code><a href="context_labels.html">context_labels()</a></code>
-(<code>morph_sort</code> and <code>morph_back</code>).</p></dd>
+<dd><p>Texts, as returned by <code><a href="context_labels.html">context_labels()</a></code>: <code>morph_sort</code>
+and <code>morph_back</code> for the button, <code>morph_highest</code> and <code>morph_lowest</code> for
+the line under the title.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -140,9 +147,11 @@ globe at the end. Features without a value in <code>column</code> are left out o
 the grid. For small islands far from the main part of a feature (more
 than about twice its size away), the grid shows the main part only.</p>
 <p>The animation is meant for a few shapes, such as the provinces of a
-country: it works best with up to 30 features, gives a warning from 31
-to 50, and an error above 50, where shapes become too small to
-recognise. Readers who prefer reduced motion
+country. When the layer has more than <code>n</code> features, only the first <code>n</code>
+(the highest, or the lowest with <code>order = "asc"</code>) move to the grid, and
+the rest fade under it; a line under the title tells readers, such as
+"The 30 highest of 529". To show them all, group the features first,
+such as departments into provinces. Readers who prefer reduced motion
 (an operating system setting) see the result without the animation.</p>
     </div>
 

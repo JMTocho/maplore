@@ -35,7 +35,8 @@ view_summary_labels(lang = c("en", "es"), ...)
   `search_placeholder`, `search_none`, `search_open`. Area:
   `area_zoom_in`. References: `ref_above`, `ref_below`, `ref_same`. Map
   notes: `notes_title`, `notes_source`, `notes_link`. Rank morph:
-  `morph_sort`, `morph_back`.
+  `morph_sort`, `morph_back`, `morph_highest`, `morph_lowest` (`{n}` and
+  `{total}` are replaced by the numbers).
 
 ## Value
 
@@ -89,6 +90,8 @@ context_labels("es")
 #>   notes_link         Más información
 #>   morph_sort         Ordenar ↕
 #>   morph_back         Volver al mapa
+#>   morph_highest      Los {n} más altos de {total}
+#>   morph_lowest       Los {n} más bajos de {total}
 context_labels("en", title = "Visible now")
 #> <context_labels>
 #>   title              Visible now
@@ -130,4 +133,6 @@ context_labels("en", title = "Visible now")
 #>   notes_link         More information
 #>   morph_sort         Sort ↕
 #>   morph_back         Back to the map
+#>   morph_highest      The {n} highest of {total}
+#>   morph_lowest       The {n} lowest of {total}
 ```

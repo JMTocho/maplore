@@ -15,6 +15,7 @@ add_rank_morph(
   column,
   name_column,
   order = c("desc", "asc"),
+  n = 30,
   title = NULL,
   duration = 1.6,
   locale = "en-US",
@@ -52,6 +53,11 @@ add_rank_morph(
   `"desc"` (the default) puts the highest value first, `"asc"` the
   lowest.
 
+- n:
+
+  Largest number of shapes in the grid, from 1 to 50. With more than 30,
+  shapes become small and hard to recognise.
+
 - title:
 
   Optional title shown above the grid while it is visible.
@@ -72,9 +78,10 @@ add_rank_morph(
 
 - labels:
 
-  Button texts, as returned by
-  [`context_labels()`](https://jmtocho.github.io/maplore/reference/context_labels.md)
-  (`morph_sort` and `morph_back`).
+  Texts, as returned by
+  [`context_labels()`](https://jmtocho.github.io/maplore/reference/context_labels.md):
+  `morph_sort` and `morph_back` for the button, `morph_highest` and
+  `morph_lowest` for the line under the title.
 
 ## Value
 
@@ -90,10 +97,12 @@ the grid. For small islands far from the main part of a feature (more
 than about twice its size away), the grid shows the main part only.
 
 The animation is meant for a few shapes, such as the provinces of a
-country: it works best with up to 30 features, gives a warning from 31
-to 50, and an error above 50, where shapes become too small to
-recognise. Readers who prefer reduced motion (an operating system
-setting) see the result without the animation.
+country. When the layer has more than `n` features, only the first `n`
+(the highest, or the lowest with `order = "asc"`) move to the grid, and
+the rest fade under it; a line under the title tells readers, such as
+"The 30 highest of 529". To show them all, group the features first,
+such as departments into provinces. Readers who prefer reduced motion
+(an operating system setting) see the result without the animation.
 
 ## Examples
 
