@@ -6,7 +6,7 @@
 
 ## Test environments
 
-* local macOS (aarch64), R 4.5
+* local macOS (aarch64), R 4.5.2
 * win-builder (devel and release)
 
 ## Notes for the reviewer
