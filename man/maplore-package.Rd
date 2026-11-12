@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Juan Manuel Tocho \email{11000056+JMTocho@users.noreply.github.com} [copyright holder]
+\strong{Maintainer}: Juan Manuel Tocho \email{juanmtocho.dev@gmail.com} [copyright holder]
 
 }
 \keyword{internal}

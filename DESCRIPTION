@@ -2,7 +2,7 @@ Package: maplore
 Title: Context Components That Help Readers Understand 'mapgl' Maps
 Version: 0.0.0.9001
 Authors@R:
-    person("Juan Manuel", "Tocho", email = "11000056+JMTocho@users.noreply.github.com",
+    person("Juan Manuel", "Tocho", email = "juanmtocho.dev@gmail.com",
            role = c("aut", "cre", "cph"))
 Description: Adds components to 'mapgl' maps ('MapLibre GL JS' and
     'Mapbox GL JS') that put what the reader sees in context: a live
