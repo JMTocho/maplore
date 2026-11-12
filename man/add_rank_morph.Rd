@@ -35,7 +35,7 @@ GeoJSON.}
 the lowest.}
 
 \item{n}{Largest number of shapes in the grid, from 1 to 50. With more
-than 30, shapes become small and hard to recognise.}
+than 30, shapes become small and hard to recognize.}
 
 \item{title}{Optional title shown above the grid while it is visible.}
 
@@ -58,7 +58,7 @@ The modified map object.
 Adds a button that lifts every polygon of a layer out of the map and lines
 them up in a grid, sorted by a column, all at the same size and with their
 rank, name and value below. Another click sends them back to their place.
-Shapes keep their form and colour, so readers see at a glance both where
+Shapes keep their form and color, so readers see at a glance both where
 each one is and how it ranks.
 }
 \details{
@@ -78,7 +78,7 @@ such as departments into provinces. Readers who prefer reduced motion
 (an operating system setting) see the result without the animation.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("mapgl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(mapgl)
 
 maplibre(center = c(137, 37), zoom = 4.2) |>
@@ -98,5 +98,5 @@ maplibre(center = c(137, 37), zoom = 4.2) |>
     suffix = " \%",
     title = "Population change, 2020-2024"
   )
-}
+\dontshow{\}) # examplesIf}
 }

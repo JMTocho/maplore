@@ -31,7 +31,7 @@ object or inline GeoJSON added in R.}
 apart features with the same name, such as the province.}
 
 \item{placeholder}{Text shown in the empty search box. \code{NULL} (the
-default) uses the \code{search_placeholder} label, "Search…".}
+default) uses the \code{search_placeholder} label, "Search...".}
 
 \item{collapsed}{If \code{TRUE}, the search box starts folded into a button
 with a magnifying glass, which opens it; it folds back when it loses
@@ -66,7 +66,7 @@ The search box works with the keyboard: arrow keys move through the
 suggestions, Enter chooses one and Escape closes them.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("mapgl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(mapgl)
 
 maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -76,5 +76,5 @@ maplibre(center = c(-64, -38.5), zoom = 3.4) |>
     search_column = "department",
     detail_column = "province"
   )
-}
+\dontshow{\}) # examplesIf}
 }

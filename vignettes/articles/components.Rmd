@@ -29,7 +29,7 @@ japan <- maplibre(style = carto_style("positron"), center = c(135, 35), zoom = 4
 
 ## What am I looking at? `add_view_summary()`
 
-A panel that summarises the features in view and compares them with the
+A panel that summarizes the features in view and compares them with the
 whole map.
 
 ```{r}
@@ -79,7 +79,7 @@ The chart at the bottom of the panel can be:
   value in view (dot) and the whole map (dashed line) marked on it. The
   simplest to read.
 - `"strip"`: one dot per feature, those in view in the map's colors over all
-  the others in grey. It shows where the features in view fall among all of
+  the others in gray. It shows where the features in view fall among all of
   them; above 2,000 features, an even sample is drawn.
 - `"split"`: two histograms on the same scale, the view above and all
   features below.

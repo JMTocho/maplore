@@ -62,7 +62,7 @@ the map, and open with a click.
 Texts are shown as plain text, never as HTML.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("mapgl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(mapgl)
 
 maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -71,9 +71,9 @@ maplibre(center = c(-64, -38.5), zoom = 3.4) |>
     source = "INDEC, population projections 2022-2035.",
     notes = c(
       "Growth is the total change between 2022 and 2035, not per year.",
-      "Islas del Atlantico Sur has no estimates and is shown in grey."
+      "Islas del Atlantico Sur (Islas Malvinas) has no estimates."
     ),
     link = "https://www.indec.gob.ar"
   )
-}
+\dontshow{\}) # examplesIf}
 }

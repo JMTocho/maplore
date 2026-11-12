@@ -45,16 +45,16 @@
 #'   \item{id}{USGS event id.}
 #'   \item{date}{Date (UTC).}
 #'   \item{magnitude}{Magnitude.}
-#'   \item{depth}{Depth in kilometres.}
+#'   \item{depth}{Depth in kilometers.}
 #'   \item{place}{Description of the location, as given by the USGS.}
-#'   \item{geometry}{Epicentre (WGS 84).}
+#'   \item{geometry}{Epicenter (WGS 84).}
 #' }
 #'
 #' @source U.S. Geological Survey (USGS) Earthquake Catalog, public domain,
 #'   <https://earthquake.usgs.gov/earthquakes/search/>.
 "earthquakes"
 
-#' Five prefectures of Japan: a shrinking, ageing population
+#' Five prefectures of Japan: a shrinking, aging population
 #'
 #' Five prefectures of Japan, from north to south (Hokkaido, Akita, Tokyo,
 #' Kyoto and Okinawa), with their population in 2020 (census) and 2024

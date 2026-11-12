@@ -25,7 +25,7 @@ library(maplore)
 their estimated population in 2022 and 2035 and the projected growth
 between both years, in percent. Islas del Atlántico Sur, which includes the
 Islas Malvinas, has no estimates: its values are `NA`, so the map below
-gives it a grey `na_color`.
+gives it a gray `na_color`.
 
 ```{r}
 head(sf::st_drop_geometry(ar_departments))
@@ -34,7 +34,7 @@ head(sf::st_drop_geometry(ar_departments))
 ## A summary of what is in view
 
 Start with a regular mapgl map: a fill layer colored by growth. Then add
-`add_view_summary()` with the layer's ID and the column to summarise.
+`add_view_summary()` with the layer's ID and the column to summarize.
 
 ```{r}
 colors <- interpolate(

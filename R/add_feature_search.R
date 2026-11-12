@@ -19,7 +19,7 @@
 #'   with a magnifying glass, which opens it; it folds back when it loses
 #'   focus while empty. Useful on small maps, such as on phones.
 #' @param placeholder Text shown in the empty search box. `NULL` (the
-#'   default) uses the `search_placeholder` label, "Search…".
+#'   default) uses the `search_placeholder` label, "Search...".
 #' @param max_results Maximum number of suggestions.
 #' @param locale Locale used to sort the suggestions alphabetically.
 #' @param position Corner for the search box: one of `"top-left"`,
@@ -31,8 +31,7 @@
 #' @return The modified map object.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf requireNamespace("mapgl", quietly = TRUE)
 #' library(mapgl)
 #'
 #' maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -42,7 +41,6 @@
 #'     search_column = "department",
 #'     detail_column = "province"
 #'   )
-#' }
 add_feature_search <- function(
   map,
   layer_id,

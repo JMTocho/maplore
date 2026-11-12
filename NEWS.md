@@ -1,4 +1,6 @@
-# maplore 0.0.0.9001
+# maplore 0.1.0
+
+* First release on CRAN.
 
 * `add_view_summary()` gains:
   * `style`: `"full"` (the default), `"compact"` or `"mini"`, a strip of

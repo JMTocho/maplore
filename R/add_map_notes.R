@@ -30,8 +30,7 @@
 #' @return The modified map object.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf requireNamespace("mapgl", quietly = TRUE)
 #' library(mapgl)
 #'
 #' maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -40,11 +39,10 @@
 #'     source = "INDEC, population projections 2022-2035.",
 #'     notes = c(
 #'       "Growth is the total change between 2022 and 2035, not per year.",
-#'       "Islas del Atlantico Sur has no estimates and is shown in grey."
+#'       "Islas del Atlantico Sur (Islas Malvinas) has no estimates."
 #'     ),
 #'     link = "https://www.indec.gob.ar"
 #'   )
-#' }
 add_map_notes <- function(
   map,
   source = NULL,

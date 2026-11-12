@@ -1,6 +1,6 @@
 Package: maplore
-Title: Context Components That Help Readers Understand 'mapgl' Maps
-Version: 0.0.0.9001
+Title: Context Components that Help Readers Understand 'mapgl' Maps
+Version: 0.1.0
 Authors@R:
     person("Juan Manuel", "Tocho", email = "juanmtocho.dev@gmail.com",
            role = c("aut", "cre", "cph"))
@@ -8,13 +8,16 @@ Description: Adds components to 'mapgl' maps ('MapLibre GL JS' and
     'Mapbox GL JS') that put what the reader sees in context: a live
     summary of the features in view compared with the whole map, a ranking
     of the features in view, a tooltip that shows where each value stands
-    among all of them, and a search box over the map's own data. Everything
-    runs in the browser, so the components work in static HTML, 'R
-    Markdown' and 'Quarto' documents without a 'Shiny' server.
+    among all of them, a search box over the map's own data, notes on the
+    data and its sources, and an animation that lifts the map's shapes into
+    a grid sorted by their values. Everything runs in the browser, so the
+    components work in static HTML, 'R Markdown' and 'Quarto' documents
+    without a 'Shiny' server.
 License: MIT + file LICENSE
 URL: https://jmtocho.github.io/maplore/, https://github.com/JMTocho/maplore
 BugReports: https://github.com/JMTocho/maplore/issues
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends:

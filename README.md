@@ -4,7 +4,7 @@ maplore adds components to [mapgl](https://walker-data.com/mapgl/) maps that
 help readers understand what they are looking at: as they pan and zoom, the
 map tells them how the area in view compares with the rest.
 
-![Animated map of Argentina coloured by projected population growth. As the map is panned and zoomed, the summary panel on the left and the ranking on the right update with the departments in view, and hovering over a department shows a tooltip with its rank and its difference with the average](https://raw.githubusercontent.com/JMTocho/maplore/main/man/figures/view-all.gif)
+![Animated map of Argentina colored by projected population growth. As the map is panned and zoomed, the summary panel on the left and the ranking on the right update with the departments in view, and hovering over a department shows a tooltip with its rank and its difference with the average](https://raw.githubusercontent.com/JMTocho/maplore/main/man/figures/view-all.gif)
 
 - `add_view_summary()`: what is in view, compared with the whole map.
 - `add_view_ranking()`: which features stand out in view.

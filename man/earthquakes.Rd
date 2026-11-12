@@ -10,9 +10,9 @@ An \code{sf} object with 2,569 points and 6 columns:
 \item{id}{USGS event id.}
 \item{date}{Date (UTC).}
 \item{magnitude}{Magnitude.}
-\item{depth}{Depth in kilometres.}
+\item{depth}{Depth in kilometers.}
 \item{place}{Description of the location, as given by the USGS.}
-\item{geometry}{Epicentre (WGS 84).}
+\item{geometry}{Epicenter (WGS 84).}
 }
 }
 \source{

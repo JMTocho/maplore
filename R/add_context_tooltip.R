@@ -23,8 +23,7 @@
 #' @return The modified map object.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf requireNamespace("mapgl", quietly = TRUE)
 #' library(mapgl)
 #'
 #' maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -46,7 +45,6 @@
 #'     unit = "departments",
 #'     suffix = "%"
 #'   )
-#' }
 add_context_tooltip <- function(
   map,
   layer_id,

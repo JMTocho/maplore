@@ -3,7 +3,7 @@
 \docType{data}
 \name{jp_prefectures}
 \alias{jp_prefectures}
-\title{Five prefectures of Japan: a shrinking, ageing population}
+\title{Five prefectures of Japan: a shrinking, aging population}
 \format{
 An \code{sf} object with 5 rows and 7 columns:
 \describe{

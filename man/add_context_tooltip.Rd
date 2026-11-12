@@ -26,7 +26,7 @@ add_context_tooltip(
 \arguments{
 \item{map}{A map created with \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}}.}
 
-\item{layer_id}{ID of the layer to summarise: a polygon layer (such as
+\item{layer_id}{ID of the layer to summarize: a polygon layer (such as
 \code{\link[mapgl:add_fill_layer]{mapgl::add_fill_layer()}}) or a point layer (such as
 \code{\link[mapgl:add_circle_layer]{mapgl::add_circle_layer()}} or \code{\link[mapgl:add_symbol_layer]{mapgl::add_symbol_layer()}}). Its source
 must be an \code{sf} object or inline GeoJSON added in R; vector tile sources
@@ -83,7 +83,7 @@ Use it instead of the layer's own \code{tooltip} argument: with both, two
 tooltips are shown.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("mapgl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(mapgl)
 
 maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -105,5 +105,5 @@ maplibre(center = c(-64, -38.5), zoom = 3.4) |>
     unit = "departments",
     suffix = "\%"
   )
-}
+\dontshow{\}) # examplesIf}
 }

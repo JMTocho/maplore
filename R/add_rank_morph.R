@@ -3,7 +3,7 @@
 #' Adds a button that lifts every polygon of a layer out of the map and lines
 #' them up in a grid, sorted by a column, all at the same size and with their
 #' rank, name and value below. Another click sends them back to their place.
-#' Shapes keep their form and colour, so readers see at a glance both where
+#' Shapes keep their form and color, so readers see at a glance both where
 #' each one is and how it ranks.
 #'
 #' While the shapes are out of the map, panning and zooming are paused, and
@@ -29,7 +29,7 @@
 #' @param order `"desc"` (the default) puts the highest value first, `"asc"`
 #'   the lowest.
 #' @param n Largest number of shapes in the grid, from 1 to 50. With more
-#'   than 30, shapes become small and hard to recognise.
+#'   than 30, shapes become small and hard to recognize.
 #' @param title Optional title shown above the grid while it is visible.
 #' @param duration Length of the animation, in seconds.
 #' @param locale,digits,prefix,suffix Number formatting for the values, as
@@ -43,8 +43,7 @@
 #' @return The modified map object.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf requireNamespace("mapgl", quietly = TRUE)
 #' library(mapgl)
 #'
 #' maplibre(center = c(137, 37), zoom = 4.2) |>
@@ -64,7 +63,6 @@
 #'     suffix = " %",
 #'     title = "Population change, 2020-2024"
 #'   )
-#' }
 add_rank_morph <- function(
   map,
   layer_id,

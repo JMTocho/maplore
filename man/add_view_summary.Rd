@@ -40,13 +40,13 @@ add_view_summary(
 \arguments{
 \item{map}{A map created with \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}}.}
 
-\item{layer_id}{ID of the layer to summarise: a polygon layer (such as
+\item{layer_id}{ID of the layer to summarize: a polygon layer (such as
 \code{\link[mapgl:add_fill_layer]{mapgl::add_fill_layer()}}) or a point layer (such as
 \code{\link[mapgl:add_circle_layer]{mapgl::add_circle_layer()}} or \code{\link[mapgl:add_symbol_layer]{mapgl::add_symbol_layer()}}). Its source
 must be an \code{sf} object or inline GeoJSON added in R; vector tile sources
 are not supported.}
 
-\item{column}{Name of the numeric column to summarise.}
+\item{column}{Name of the numeric column to summarize.}
 
 \item{label}{Name of the variable shown in the panel. Defaults to
 \code{column}.}
@@ -107,10 +107,10 @@ of all values.
 the value in view and the overall value marked on it. With
 \code{stat = "sum"}, the share of the total that is in view.
 \item \code{"strip"}: one dot per feature along the scale of values, those in
-view in the map's colors over all the others in grey. Above 2,000
+view in the map's colors over all the others in gray. Above 2,000
 features, an even sample of 2,000 is drawn.
 \item \code{"split"}: two histograms on the same scale, one above the other:
-the features in view, in the map's colors, and all features, in grey.
+the features in view, in the map's colors, and all features, in gray.
 \item \code{"none"}: no chart.
 }}
 
@@ -156,7 +156,7 @@ example, \code{list("CABA" = reference_group("province", "Ciudad Autonoma de Bue
 The modified map object.
 }
 \description{
-Adds a panel that summarises the features of a layer that are currently
+Adds a panel that summarizes the features of a layer that are currently
 visible and compares them with the whole layer: how many are in view,
 their average (or median, or total), the highest and lowest values, and a
 histogram of the visible values over the distribution of all values. The
@@ -183,7 +183,7 @@ every point in view is counted, whether it is drawn on its own or inside
 a cluster. Use the ID of the layer itself, not of its \code{-clusters} layer.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("mapgl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(mapgl)
 
 maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -208,5 +208,5 @@ maplibre(center = c(-64, -38.5), zoom = 3.4) |>
     unit = "departments",
     suffix = "\%"
   )
-}
+\dontshow{\}) # examplesIf}
 }

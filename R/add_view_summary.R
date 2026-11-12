@@ -1,6 +1,6 @@
 #' Add an "in this view" summary panel to a map
 #'
-#' Adds a panel that summarises the features of a layer that are currently
+#' Adds a panel that summarizes the features of a layer that are currently
 #' visible and compares them with the whole layer: how many are in view,
 #' their average (or median, or total), the highest and lowest values, and a
 #' histogram of the visible values over the distribution of all values. The
@@ -26,12 +26,12 @@
 #' a cluster. Use the ID of the layer itself, not of its `-clusters` layer.
 #'
 #' @param map A map created with [mapgl::maplibre()] or [mapgl::mapboxgl()].
-#' @param layer_id ID of the layer to summarise: a polygon layer (such as
+#' @param layer_id ID of the layer to summarize: a polygon layer (such as
 #'   [mapgl::add_fill_layer()]) or a point layer (such as
 #'   [mapgl::add_circle_layer()] or [mapgl::add_symbol_layer()]). Its source
 #'   must be an `sf` object or inline GeoJSON added in R; vector tile sources
 #'   are not supported.
-#' @param column Name of the numeric column to summarise.
+#' @param column Name of the numeric column to summarize.
 #' @param label Name of the variable shown in the panel. Defaults to
 #'   `column`.
 #' @param name_column Optional column with feature names, used to report the
@@ -74,10 +74,10 @@
 #'     the value in view and the overall value marked on it. With
 #'     `stat = "sum"`, the share of the total that is in view.
 #'   - `"strip"`: one dot per feature along the scale of values, those in
-#'     view in the map's colors over all the others in grey. Above 2,000
+#'     view in the map's colors over all the others in gray. Above 2,000
 #'     features, an even sample of 2,000 is drawn.
 #'   - `"split"`: two histograms on the same scale, one above the other:
-#'     the features in view, in the map's colors, and all features, in grey.
+#'     the features in view, in the map's colors, and all features, in gray.
 #'   - `"none"`: no chart.
 #' @param style How much the panel shows:
 #'   - `"full"` (the default): count, value, comparison, highest and lowest,
@@ -111,8 +111,7 @@
 #' @return The modified map object.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf requireNamespace("mapgl", quietly = TRUE)
 #' library(mapgl)
 #'
 #' maplibre(center = c(-64, -38.5), zoom = 3.4) |>
@@ -137,7 +136,6 @@
 #'     unit = "departments",
 #'     suffix = "%"
 #'   )
-#' }
 add_view_summary <- function(
   map,
   layer_id,
