@@ -7,7 +7,9 @@
 ## Test environments
 
 * local macOS (aarch64), R 4.5.2
-* win-builder (devel and release)
+* win-builder: R-devel (2026-11-11 r90876) and R 4.6.2
+* GitHub Actions: macOS and Windows (R release), Ubuntu (R devel, release
+  and oldrel-1)
 
 ## Notes for the reviewer
 
