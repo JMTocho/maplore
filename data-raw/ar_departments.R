@@ -33,8 +33,12 @@ pop <- read.csv2(
   summarise(pop = sum(Población), .groups = "drop") |>
   tidyr::pivot_wider(names_from = Fecha, values_from = pop, names_prefix = "pop_")
 
+# left_join keeps every department, including Islas del Atlántico Sur
+# (Islas Malvinas, Georgias del Sur, Sandwich del Sur and the surrounding
+# waters), which is part of Tierra del Fuego but has no INDEC estimates: its
+# population and growth are NA.
 ar_departments <- geo |>
-  inner_join(pop, by = "id") |>
+  left_join(pop, by = "id") |>
   transmute(
     id,
     department = nombre,

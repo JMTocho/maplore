@@ -36,7 +36,8 @@ maplibre(center = c(-64, -38.5), zoom = 3.4) |>
     fill_color = interpolate(
       column = "growth",
       values = c(-10, 0, 10),
-      stops = c("#b2182b", "#f7f7f7", "#2166ac")
+      stops = c("#b2182b", "#f7f7f7", "#2166ac"),
+      na_color = "#d9d9d9"
     )
   ) |>
   add_view_summary("departments", "growth", name_column = "department", suffix = "%") |>

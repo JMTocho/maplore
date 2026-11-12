@@ -40,7 +40,7 @@
 #'     source = "INDEC, population projections 2022-2035.",
 #'     notes = c(
 #'       "Growth is the total change between 2022 and 2035, not per year.",
-#'       "Islas del Atlantico Sur is not included: it has no estimates."
+#'       "Islas del Atlantico Sur has no estimates and is shown in grey."
 #'     ),
 #'     link = "https://www.indec.gob.ar"
 #'   )

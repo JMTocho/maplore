@@ -7,7 +7,7 @@ them are `sf` objects, ready to use as a mapgl source.
 
 | Dataset | What | Geometry | Source |
 |---|---|---|---|
-| `ar_departments` | The 528 departments of Argentina, with population in 2022 and 2035 and the projected growth | Polygons | IGN, INDEC |
+| `ar_departments` | The 529 departments of Argentina, with population in 2022 and 2035 and the projected growth (`NA` for Islas del Atlántico Sur, which has no estimates) | Polygons | IGN, INDEC |
 | `earthquakes` | The 2,569 earthquakes of magnitude 4.5 or more in southern South America, 2016-2025, with magnitude and depth | Points | USGS |
 | `jp_prefectures` | Five prefectures of Japan, from Hokkaido to Okinawa, with population in 2020 and 2024 and the share of people aged 65 and over | Polygons | Statistics Bureau of Japan, Natural Earth |
 
@@ -38,3 +38,24 @@ The scripts that download and prepare each dataset are in the
 [`data-raw`](https://github.com/JMTocho/maplore/tree/main/data-raw) folder
 of the repository. See each dataset's help page, such as
 `?jp_prefectures`, for its columns.
+
+## Maps of Argentina with your own data
+
+`ar_departments` is an example. To map Argentina with your own figures,
+the [geoAr](https://politicaargentina.github.io/geoAr/) package, on CRAN,
+downloads official boundaries at several levels, such as provinces,
+departments and census tracts, with the INDEC codes to join your data:
+
+```{r, eval = FALSE}
+library(geoAr)
+library(mapgl)
+library(maplore)
+
+tucuman <- get_geo("TUCUMAN")   # departments of Tucumán, with INDEC codes
+# Your data, one row per department, with the same code:
+tucuman <- merge(tucuman, my_data, by = "coddepto_censo")
+
+maplibre(bounds = tucuman) |>
+  add_fill_layer(id = "tucuman", source = tucuman, fill_color = "#9ecae1") |>
+  add_view_summary(layer_id = "tucuman", column = "value")
+```

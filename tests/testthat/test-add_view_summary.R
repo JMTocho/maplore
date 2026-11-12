@@ -279,7 +279,13 @@ test_that("jp_prefectures has the documented shape and yearbook figures", {
 
 test_that("ar_departments has the documented shape", {
   expect_s3_class(ar_departments, "sf")
-  expect_equal(nrow(ar_departments), 528)
+  expect_equal(nrow(ar_departments), 529)
+  # Islas del Atlántico Sur (Islas Malvinas) is included, without estimates.
+  islas <- ar_departments[ar_departments$id == "94021", ]
+  expect_equal(nrow(islas), 1)
+  expect_match(islas$province, "Tierra del Fuego")
+  expect_true(is.na(islas$growth))
+  expect_equal(sum(is.na(ar_departments$growth)), 1)
   expect_named(
     ar_departments,
     c("id", "department", "province", "pop_2022", "pop_2035", "growth", "geometry")

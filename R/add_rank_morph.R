@@ -17,7 +17,7 @@
 #' country. When the layer has more than `n` features, only the first `n`
 #' (the highest, or the lowest with `order = "asc"`) move to the grid, and
 #' the rest fade under it; a line under the title tells readers, such as
-#' "The 30 highest of 529". To show them all, group the features first,
+#' "The 30 highest of 528". To show them all, group the features first,
 #' such as departments into provinces. Readers who prefer reduced motion
 #' (an operating system setting) see the result without the animation.
 #'

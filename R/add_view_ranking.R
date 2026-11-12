@@ -41,7 +41,8 @@
 #'     fill_color = interpolate(
 #'       column = "growth",
 #'       values = c(-10, 0, 10),
-#'       stops = c("#b2182b", "#f7f7f7", "#2166ac")
+#'       stops = c("#b2182b", "#f7f7f7", "#2166ac"),
+#'       na_color = "#d9d9d9"
 #'     )
 #'   ) |>
 #'   add_view_ranking(
