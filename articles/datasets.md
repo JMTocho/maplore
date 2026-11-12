@@ -18,7 +18,7 @@ them are `sf` objects, ready to use as a mapgl source.
   east, from about 56 km on the Chilean coast to about 200 km under
   Santiago del Estero, following the Nazca plate as it sinks under South
   America.
-- **Japan** (`jp_prefectures`): a shrinking, ageing country. Of the five
+- **Japan** (`jp_prefectures`): a shrinking, aging country. Of the five
   prefectures, only Tokyo grew between 2020 and 2024, and in Akita
   almost 40% of people are 65 or older.
 

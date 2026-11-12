@@ -1,9 +1,12 @@
 # Changelog
 
-## maplore 0.0.0.9001
+## maplore 0.1.0
+
+- First release on CRAN.
 
 - [`add_view_summary()`](https://jmtocho.github.io/maplore/reference/add_view_summary.md)
   gains:
+
   - `style`: `"full"` (the default), `"compact"` or `"mini"`, a strip of
     three figures: the features in view, the statistic and the area of
     the view. `compact = TRUE` still works and means
@@ -20,20 +23,24 @@
     [`reference_group()`](https://jmtocho.github.io/maplore/reference/reference_group.md),
     such as a province. Their values are computed in R with the panel’s
     statistic and weight.
+
 - [`add_feature_search()`](https://jmtocho.github.io/maplore/reference/add_feature_search.md)
   gains `collapsed`: the search box starts folded into a button with a
   magnifying glass, which opens it, and folds back when it loses focus
   while empty. Useful on small maps, such as on phones.
+
 - [`add_view_summary()`](https://jmtocho.github.io/maplore/reference/add_view_summary.md)
   and
   [`add_view_ranking()`](https://jmtocho.github.io/maplore/reference/add_view_ranking.md)
   gain `fade = "moving"`: the panels fade while the map is panned or
   zoomed, so the map shows through, and come back when it stops.
+
 - New
   [`add_map_notes()`](https://jmtocho.github.io/maplore/reference/add_map_notes.md):
   a small “Notes” button that opens a panel with context about the whole
   map: the source of the data, notes on what the figures do not include,
   and a link to learn more.
+
 - New
   [`add_rank_morph()`](https://jmtocho.github.io/maplore/reference/add_rank_morph.md):
   a button that lifts the polygons of a layer out of the map and lines
@@ -41,18 +48,22 @@
   name and value; another click sends them back. `n` (30 by default, up
   to 50) limits the grid to the highest or lowest features, and a line
   under the title tells readers how many are shown.
+
 - New texts in
   [`context_labels()`](https://jmtocho.github.io/maplore/reference/context_labels.md):
   `area_zoom_in`, `ref_above`, `ref_below`, `ref_same`, `search_open`,
   `notes_title`, `notes_source`, `notes_link`, `morph_sort`,
   `morph_back`, `morph_highest` and `morph_lowest`.
+
 - `ar_departments` now includes the Islas del Atlántico Sur department
   (Islas Malvinas, Georgias del Sur and Sandwich del Sur), part of
   Tierra del Fuego, with its official boundary. It has no population
   estimates, so its values are `NA`: give the map’s color scale an
   `na_color`.
+
 - The components now read the map’s colors when the color scale has an
   `na_color`.
+
 - maplore now imports jsonlite, which mapgl already uses, to read the
   layer’s data in R.
 

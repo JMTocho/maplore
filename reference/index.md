@@ -41,11 +41,11 @@ Values to compare the view with in
 - [`earthquakes`](https://jmtocho.github.io/maplore/reference/earthquakes.md)
   : Earthquakes in southern South America
 - [`jp_prefectures`](https://jmtocho.github.io/maplore/reference/jp_prefectures.md)
-  : Five prefectures of Japan: a shrinking, ageing population
+  : Five prefectures of Japan: a shrinking, aging population
 
 ## Package
 
 - [`maplore`](https://jmtocho.github.io/maplore/reference/maplore-package.md)
   [`maplore-package`](https://jmtocho.github.io/maplore/reference/maplore-package.md)
-  : maplore: Context Components That Help Readers Understand 'mapgl'
+  : maplore: Context Components that Help Readers Understand 'mapgl'
   Maps

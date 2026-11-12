@@ -1,4 +1,4 @@
-# Five prefectures of Japan: a shrinking, ageing population
+# Five prefectures of Japan: a shrinking, aging population
 
 Five prefectures of Japan, from north to south (Hokkaido, Akita, Tokyo,
 Kyoto and Okinawa), with their population in 2020 (census) and 2024

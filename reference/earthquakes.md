@@ -29,7 +29,7 @@ An `sf` object with 2,569 points and 6 columns:
 
 - depth:
 
-  Depth in kilometres.
+  Depth in kilometers.
 
 - place:
 
@@ -37,7 +37,7 @@ An `sf` object with 2,569 points and 6 columns:
 
 - geometry:
 
-  Epicentre (WGS 84).
+  Epicenter (WGS 84).
 
 ## Source
 
