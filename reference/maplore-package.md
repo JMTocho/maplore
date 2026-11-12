@@ -20,5 +20,5 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Juan Manuel Tocho
-<11000056+JMTocho@users.noreply.github.com> \[copyright holder\]
+**Maintainer**: Juan Manuel Tocho <juanmtocho.dev@gmail.com> \[copyright
+holder\]

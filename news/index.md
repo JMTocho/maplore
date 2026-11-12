@@ -46,6 +46,13 @@
   `area_zoom_in`, `ref_above`, `ref_below`, `ref_same`, `search_open`,
   `notes_title`, `notes_source`, `notes_link`, `morph_sort`,
   `morph_back`, `morph_highest` and `morph_lowest`.
+- `ar_departments` now includes the Islas del Atlántico Sur department
+  (Islas Malvinas, Georgias del Sur and Sandwich del Sur), part of
+  Tierra del Fuego, with its official boundary. It has no population
+  estimates, so its values are `NA`: give the map’s color scale an
+  `na_color`.
+- The components now read the map’s colors when the color scale has an
+  `na_color`.
 - maplore now imports jsonlite, which mapgl already uses, to read the
   layer’s data in R.
 

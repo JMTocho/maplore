@@ -578,6 +578,11 @@
     var op = expr[0];
     var i;
 
+    // mapgl's `na_color` wraps the scale in a "case" that paints missing
+    // values apart: ["case", <is missing>, na_color, <scale>]. maplore only
+    // colors features with a value, so the scale is the last branch.
+    if (op === "case" && expr.length === 4) return colorScale(expr[3], column);
+
     if (op === "interpolate" || op === "interpolate-hcl" || op === "interpolate-lab") {
       if (!readsColumn(expr[2], column)) return null;
       var base = expr[1] && expr[1][0] === "exponential" ? expr[1][1] : 1;

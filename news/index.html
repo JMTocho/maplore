@@ -62,6 +62,9 @@
 <li>New <code><a href="../reference/add_map_notes.html">add_map_notes()</a></code>: a small “Notes” button that opens a panel with context about the whole map: the source of the data, notes on what the figures do not include, and a link to learn more.</li>
 <li>New <code><a href="../reference/add_rank_morph.html">add_rank_morph()</a></code>: a button that lifts the polygons of a layer out of the map and lines them up, sorted by a column, all at the same size, with their rank, name and value; another click sends them back. <code>n</code> (30 by default, up to 50) limits the grid to the highest or lowest features, and a line under the title tells readers how many are shown.</li>
 <li>New texts in <code><a href="../reference/context_labels.html">context_labels()</a></code>: <code>area_zoom_in</code>, <code>ref_above</code>, <code>ref_below</code>, <code>ref_same</code>, <code>search_open</code>, <code>notes_title</code>, <code>notes_source</code>, <code>notes_link</code>, <code>morph_sort</code>, <code>morph_back</code>, <code>morph_highest</code> and <code>morph_lowest</code>.</li>
+<li>
+<code>ar_departments</code> now includes the Islas del Atlántico Sur department (Islas Malvinas, Georgias del Sur and Sandwich del Sur), part of Tierra del Fuego, with its official boundary. It has no population estimates, so its values are <code>NA</code>: give the map’s color scale an <code>na_color</code>.</li>
+<li>The components now read the map’s colors when the color scale has an <code>na_color</code>.</li>
 <li>maplore now imports jsonlite, which mapgl already uses, to read the layer’s data in R.</li>
 </ul></div>
     <div class="section level2">

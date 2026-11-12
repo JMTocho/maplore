@@ -17,9 +17,11 @@ library(maplore)
 
 ## The data
 
-`ar_departments` comes with maplore: the 528 Argentine departments with
+`ar_departments` comes with maplore: the 529 Argentine departments with
 their estimated population in 2022 and 2035 and the projected growth
-between both years, in percent.
+between both years, in percent. Islas del Atlántico Sur, which includes
+the Islas Malvinas, has no estimates: its values are `NA`, so the map
+below gives it a grey `na_color`.
 
 ``` r
 
@@ -44,7 +46,8 @@ with the layer’s ID and the column to summarise.
 colors <- interpolate(
   column = "growth",
   values = c(-10, 0, 10),
-  stops = c("#b2182b", "#f7f7f7", "#2166ac")
+  stops = c("#b2182b", "#f7f7f7", "#2166ac"),
+  na_color = "#d9d9d9"
 )
 
 map <- maplibre(style = carto_style("positron"), center = c(-64, -38.5), zoom = 3.4) |>
